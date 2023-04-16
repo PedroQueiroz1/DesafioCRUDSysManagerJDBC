@@ -1,0 +1,172 @@
+package br.com.syscrud.application;
+
+import java.util.Scanner;
+
+import br.com.syscrud.dao.AuthorDAO;
+import br.com.syscrud.dao.ProductDAO;
+import br.com.syscrud.dao.ReviewDAO;
+import br.com.syscrud.management.AuthorManager;
+import br.com.syscrud.management.ProductManager;
+import br.com.syscrud.management.ReviewManager;
+
+public class Main {
+
+	public static void main(String[] args) {
+		try (Scanner myTeclado = new Scanner(System.in)) {
+			boolean continuar = true;
+
+			while (continuar) {
+				System.out.println("Você quer entrar em qual setor? Digite o número correspondente.");
+				System.out.println(" Produto [1] \n Autor [2] \n Análises [3]");
+				int sectorResponse = myTeclado.nextInt();
+
+				if (sectorResponse == 1) {
+					ProductDAO productDAO = new ProductDAO();
+					boolean voltar = false;
+
+					while (!voltar) {
+						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
+						System.out.println(
+								" Criar [1] \n Mostrar Todos [2] \n Atualizar [3] \n Deletar [4] \n Voltar [5]");
+						int crudResponse = myTeclado.nextInt();
+						boolean perguntaExtra = true;
+
+						if (crudResponse == 1) {
+							ProductManager.productCreate(myTeclado, productDAO);
+						} else if (crudResponse == 2) {
+							ProductManager.productRead(productDAO);
+						} else if (crudResponse == 3) {
+							ProductManager.productUpdate(myTeclado, productDAO);
+						} else if (crudResponse == 4) {
+							ProductManager.productDelete(myTeclado, productDAO);
+						} else if (crudResponse == 5) {
+							System.out.println();
+							voltar = true;
+							perguntaExtra = false;
+						} else {
+							System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+							continue;
+						}
+						if (perguntaExtra) {
+							boolean respostaValida = false;
+							while (!respostaValida) {
+								System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
+								int continueResponse = myTeclado.nextInt();
+
+								if (continueResponse == 0) {
+									continuar = false;
+									respostaValida = true;
+								} else if (continueResponse == 1) {
+									respostaValida = true;
+								} else {
+									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+								}
+							}
+						}
+					}
+				} else if (sectorResponse == 2) {
+					AuthorDAO authorDAO = new AuthorDAO();
+					boolean voltar = false;
+
+					while (!voltar) {
+						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
+						System.out.println(
+								" Criar [1] \n Mostrar Todos [2] \n Atualizar [3] \n Deletar [4] \n Voltar [5]");
+						int crudResponse = myTeclado.nextInt();
+						boolean perguntaExtra = true;
+
+						if (crudResponse == 1) {
+							AuthorManager.authorCreate(myTeclado, authorDAO);
+						} else if (crudResponse == 2) {
+							AuthorManager.authorRead(authorDAO);
+						} else if (crudResponse == 3) {
+							AuthorManager.authorUpdate(myTeclado, authorDAO);
+						} else if (crudResponse == 4) {
+							AuthorManager.authorDelete(myTeclado, authorDAO);
+						} else if (crudResponse == 5) {
+							System.out.println();
+							voltar = true;
+							perguntaExtra = false;
+						} else {
+							System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+							continue;
+						}
+
+						if (perguntaExtra) {
+							boolean respostaValida = false;
+							while (!respostaValida) {
+								System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
+								int continueResponse = myTeclado.nextInt();
+
+								if (continueResponse == 0) {
+									continuar = false;
+									respostaValida = true;
+								} else if (continueResponse == 1) {
+									respostaValida = true;
+								} else {
+									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+								}
+							}
+						}
+					}
+				} else if (sectorResponse == 3) {
+					ReviewDAO reviewDAO = new ReviewDAO();
+					AuthorDAO authorDAO = new AuthorDAO();
+					ProductDAO productDAO = new ProductDAO();
+					boolean voltar = false;
+
+					while (!voltar) {
+						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
+						System.out.println(
+								" Criar [1] \n Mostrar Todos [2] \n Atualizar [3] \n Deletar [4] \n Voltar [5]");
+						int crudResponse = myTeclado.nextInt();
+						boolean perguntaExtra = true;
+
+						if (crudResponse == 1) {
+							ReviewManager.reviewCreate(myTeclado, reviewDAO, authorDAO, productDAO);
+						} else if (crudResponse == 2) {
+							ReviewManager.reviewRead(reviewDAO);
+						} else if (crudResponse == 3) {
+							ReviewManager.reviewUpdate(myTeclado, reviewDAO, productDAO);
+						} else if (crudResponse == 4) {
+							ReviewManager.reviewDelete(myTeclado, reviewDAO);
+						} else if (crudResponse == 5) {
+							System.out.println();
+							voltar = true;
+							perguntaExtra = false;
+						} else {
+							System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+							continue;
+						}
+
+						if (perguntaExtra) {
+							boolean respostaValida = false;
+							while (!respostaValida) {
+								System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
+								int continueResponse = myTeclado.nextInt();
+
+								if (continueResponse == 0) {
+									continuar = false;
+									respostaValida = true;
+								} else if (continueResponse == 1) {
+									respostaValida = true;
+								} else {
+									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+								}
+							}
+						}
+					}
+				} else if (sectorResponse == 0) {
+					continuar = false;
+					break;
+				} else {
+					System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+				}
+			}
+		}
+	}
+	/*
+	 * public static void newBook(Author author, Product product) { Book book = new
+	 * Book(); book.setName(product.getName()); book.setAuthor(author.getId()); }
+	 */
+}

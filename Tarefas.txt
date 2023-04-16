@@ -1,0 +1,3 @@
+Listar todas as análises de um produto.
+Listar todas as análises feitas pelo autor x.
+Limitar produto a duas categorias, book e movie.
