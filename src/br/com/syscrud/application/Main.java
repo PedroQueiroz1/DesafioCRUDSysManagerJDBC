@@ -16,18 +16,21 @@ public class Main {
 			boolean continuar = true;
 
 			while (continuar) {
-				System.out.println("Você quer entrar em qual setor? Digite o número correspondente.");
+				System.out.println("Escolha um setor. Digite o número correspondente");
 				System.out.println(" Produto [1] \n Autor [2] \n Análises [3]");
 				int sectorResponse = myTeclado.nextInt();
 
 				if (sectorResponse == 1) {
+					/*
+					 * - - - - - - - - - PRODUCT - - - - - - - - -
+					 */
+					
 					ProductDAO productDAO = new ProductDAO();
 					boolean voltar = false;
 
 					while (!voltar) {
 						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-						System.out.println(
-								" Criar [1] \n Mostrar Todos [2] \n Atualizar [3] \n Deletar [4] \n Voltar [5]");
+						System.out.println(" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]");
 						int crudResponse = myTeclado.nextInt();
 						boolean perguntaExtra = true;
 
@@ -65,13 +68,15 @@ public class Main {
 						}
 					}
 				} else if (sectorResponse == 2) {
+					/*
+					 * - - - - - - - - - AUTHOR - - - - - - - - -
+					 */
 					AuthorDAO authorDAO = new AuthorDAO();
 					boolean voltar = false;
 
 					while (!voltar) {
 						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-						System.out.println(
-								" Criar [1] \n Mostrar Todos [2] \n Atualizar [3] \n Deletar [4] \n Voltar [5]");
+						System.out.println(" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]");
 						int crudResponse = myTeclado.nextInt();
 						boolean perguntaExtra = true;
 
@@ -110,6 +115,9 @@ public class Main {
 						}
 					}
 				} else if (sectorResponse == 3) {
+					/*
+					 * - - - - - - - - - REVIEW - - - - - - - - -
+					 */
 					ReviewDAO reviewDAO = new ReviewDAO();
 					AuthorDAO authorDAO = new AuthorDAO();
 					ProductDAO productDAO = new ProductDAO();
@@ -117,8 +125,7 @@ public class Main {
 
 					while (!voltar) {
 						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-						System.out.println(
-								" Criar [1] \n Mostrar Todos [2] \n Atualizar [3] \n Deletar [4] \n Voltar [5]");
+						System.out.println(" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]");
 						int crudResponse = myTeclado.nextInt();
 						boolean perguntaExtra = true;
 
