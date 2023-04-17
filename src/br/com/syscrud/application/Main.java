@@ -3,10 +3,12 @@ package br.com.syscrud.application;
 import java.util.Scanner;
 
 import br.com.syscrud.dao.AuthorDAO;
+import br.com.syscrud.dao.BookDAO;
 import br.com.syscrud.dao.MovieDAO;
 import br.com.syscrud.dao.ProductDAO;
 import br.com.syscrud.dao.ReviewDAO;
 import br.com.syscrud.management.AuthorManager;
+import br.com.syscrud.management.BookManager;
 import br.com.syscrud.management.MovieManager;
 import br.com.syscrud.management.ReviewManager;
 
@@ -32,8 +34,8 @@ public class Main {
 						boolean voltar = false;
 						while (!voltar) {
 							System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-							System.out.println(" Criar [1]\n Mostrar Todos [2]\n "
-									+ "Atualizar [3]\n Deletar [4]\n Voltar [5]");
+							System.out.println(
+									" Criar [1]\n Mostrar Todos [2]\n " + "Atualizar [3]\n Deletar [4]\n Voltar [5]");
 							int crudResponse = myTeclado.nextInt();
 							boolean perguntaExtra = true;
 
@@ -72,7 +74,50 @@ public class Main {
 							}
 						}
 					} else if (categoria == 2) {
-						// Implementar aqui a funcionalidade de livro
+						BookDAO bookDAO = new BookDAO();
+
+						boolean voltar = false;
+						while (!voltar) {
+							System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
+							System.out.println(
+									" Criar [1]\n Mostrar Todos [2]\n " + "Atualizar [3]\n Deletar [4]\n Voltar [5]");
+							int crudResponse = myTeclado.nextInt();
+							boolean perguntaExtra = true;
+
+							if (crudResponse == 1) {
+								BookManager.bookCreate(myTeclado, bookDAO);
+							} else if (crudResponse == 2) {
+								BookManager.bookRead(bookDAO);
+							} else if (crudResponse == 3) {
+								BookManager.bookUpdate(myTeclado, bookDAO);
+							} else if (crudResponse == 4) {
+								BookManager.bookDelete(myTeclado, bookDAO);
+							} else if (crudResponse == 5) {
+								System.out.println();
+								voltar = true;
+								perguntaExtra = false;
+							} else {
+								System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+								continue;
+							}
+							if (perguntaExtra) {
+								boolean respostaValida = false;
+								while (!respostaValida) {
+									System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
+									int continueResponse = myTeclado.nextInt();
+
+									if (continueResponse == 0) {
+										menuPrincipal = false;
+										voltar = true;
+										respostaValida = true;
+									} else if (continueResponse == 1) {
+										respostaValida = true;
+									} else {
+										System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									}
+								}
+							}
+						}
 					} else {
 						System.out.println("Opção não reconhecida. Escolha uma opção válida.");
 					}
