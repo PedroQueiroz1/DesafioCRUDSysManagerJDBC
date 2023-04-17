@@ -24,7 +24,7 @@ public class AuthorDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setString(1, author.getName());
 
-			System.out.println("New author saved! -> Author Name: " + author.getName());
+			System.out.println("Novo autor salvo! -> nome: " + author.getName());
 			pstm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,7 +168,7 @@ public class AuthorDAO {
 			pstm.setString(1, author.getName());
 			pstm.setInt(2, author.getId());
 
-			System.out.println("Author updated! -> Author ID: " + author.getId());
+			System.out.println("O autor foi atualizado! -> ID do Autor: " + author.getId());
 			pstm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,7 +196,7 @@ public class AuthorDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
-			System.out.println("Author deleted! -> Author ID: " + id);
+			System.out.println("Autor deletado! -> ID do autor deletado: " + id);
 			pstm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
