@@ -34,7 +34,7 @@ public class ReviewManager {
 		Author author = authorDAO.findByName(authorName);
 		if (author == null) {
 			System.out.println("Autor não reconhecido. Escolha um autor válido.");
-			return;
+
 		}
 
 		createReview.setProduct(product);
@@ -55,31 +55,29 @@ public class ReviewManager {
 		}
 	}
 
-	public static void reviewUpdate(Scanner myTeclado, ReviewDAO reviewDAO, ProductDAO productDAO) {
-		System.out.println("\nDigite o nome do produto a ter a análise alterada");
-		myTeclado.nextLine();
-		String productName = myTeclado.nextLine();
-		
-		
-		Product product = productDAO.findByName(productName);
-		if (product == null) {
-			System.out.println("Produto não encontrado. Escolha um produto válido");
-			return;
-		}
-		
-		Review updateReview = new Review();		
+	public static void reviewUpdate(Scanner myTeclado, ReviewDAO reviewDAO) {
+	    System.out.println("\nDigite o ID da review a ser alterada:");
+	    int reviewId = myTeclado.nextInt();
+	    myTeclado.nextLine();
 
-		System.out.println("\nDigite o nova quantidade de estrelas do " + productDAO.findByName(productName));
-		updateReview.setStars(myTeclado.nextInt());
+	    Review review = reviewDAO.findById(reviewId);
+	    if (review == null) {
+	        System.out.println("Review não encontrada.");
+	        return;
+	    }
 
-		System.out.println("\nDigite o novo comentário a ser feito ao " + productDAO.findByName(productName));
-		updateReview.setComment(myTeclado.nextLine());
+	    System.out.println("\nDigite a nova quantidade de estrelas. Quantidade atual: " + review.getStars());
+	    int newStars = myTeclado.nextInt();
+	    review.setStars(newStars);
 
-		
-		updateReview.setProduct(product);
-		
-		reviewDAO.update(updateReview);
+	    System.out.println("\nDigite o novo comentário. Comentário atual: " + review.getComment());
+	    myTeclado.nextLine();
+	    String newComment = myTeclado.nextLine();
+	    review.setComment(newComment);
+
+	    reviewDAO.update(review);
 	}
+
 
 	public static void reviewDelete(Scanner myTeclado, ReviewDAO reviewDAO) {
 		System.out.println("\nDigite o ID da review a ser deletada.");

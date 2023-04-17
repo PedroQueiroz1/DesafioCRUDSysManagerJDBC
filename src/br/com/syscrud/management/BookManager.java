@@ -17,8 +17,12 @@ public class BookManager {
 	    System.out.println("\nDigite o preço do " + createBook.getName() + ":");
 	    createBook.setPrice(myTeclado.nextDouble());
 
-	    System.out.println("\nDigite a quantidade de " + createBook.getName() + ":");
+	    System.out.println("\nDigite a quantidade do livro " + createBook.getName() + ":");
 	    createBook.setQuantity(myTeclado.nextInt());
+	    
+	    System.out.println("\nDigite o gênero do livro " + createBook.getName() + ":");
+	    myTeclado.nextLine();
+	    createBook.setGenre(myTeclado.nextLine());
 
 	    bookDAO.save(createBook);
 	}
@@ -58,6 +62,11 @@ public class BookManager {
 	    System.out.println("\nDigite a nova quantidade do " + book.getName() + ". Quantidade atual: " + book.getQuantity());
 	    int newQuantity = myTeclado.nextInt();
 	    book.setQuantity(newQuantity);
+	    
+	    System.out.println("\nDigite o novo gênero do " + book.getName() + ". Gênero atual: " + book.getGenre());
+	    myTeclado.nextLine();
+	    String newGenre = myTeclado.nextLine();
+	    book.setGenre(newGenre);
 
 	    bookDAO.update(book);
 	}

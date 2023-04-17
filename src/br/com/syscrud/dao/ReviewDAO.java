@@ -16,7 +16,7 @@ import br.com.syscrud.model.Review;
 public class ReviewDAO {
 
 	public void save(Review review) {
-		
+
 		String sql = "INSERT INTO `review` (`stars`, `comment`, `reviewer_id`, `product_id`) VALUES (?, ?, ?, ?)";
 
 		Connection conn = null;
@@ -30,7 +30,7 @@ public class ReviewDAO {
 			pstm.setInt(3, review.getReviewer().getId());
 			pstm.setInt(4, review.getProduct().getId());
 
-			System.out.println("New review saved! -> Review ID: " + review.getId());
+			System.out.println("Nova análise salva! -> Análise: " + review.getComment());
 			pstm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,50 +101,95 @@ public class ReviewDAO {
 	}
 
 	public Review findById(int id) {
-	    String sql = "SELECT * FROM `review` WHERE `id` = ?";
-	    Review review = null;
-	    Connection conn = null;
-	    PreparedStatement pstm = null;
-	    ResultSet rset = null;
+		String sql = "SELECT * FROM `review` WHERE `id` = ?";
+		Review review = null;
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
 
-	    try {
-	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = conn.prepareStatement(sql);
-	        pstm.setInt(1, id);
-	        rset = pstm.executeQuery();
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, id);
+			rset = pstm.executeQuery();
 
-	        if (rset.next()) {
-	            review = new Review();
-	            review.setId(rset.getInt("id"));
-	            review.setStars(rset.getInt("stars"));
-	            review.setComment(rset.getString("comment"));
-	            AuthorDAO authorDAO = new AuthorDAO();
-	            Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
-	            review.setReviewer(reviewer);
-	            ProductDAO productDAO = new ProductDAO();
-	            Product product = productDAO.findById(rset.getInt("product_id"));
-	            review.setProduct(product);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (rset != null) {
-	                rset.close();
-	            }
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return review;
+			if (rset.next()) {
+				review = new Review();
+				review.setId(rset.getInt("id"));
+				review.setStars(rset.getInt("stars"));
+				review.setComment(rset.getString("comment"));
+				AuthorDAO authorDAO = new AuthorDAO();
+				Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
+				review.setReviewer(reviewer);
+				ProductDAO productDAO = new ProductDAO();
+				Product product = productDAO.findById(rset.getInt("product_id"));
+				review.setProduct(product);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return review;
 	}
-	
+
+	public Review findByName(String productName) {
+		String sql = "SELECT * FROM `review` WHERE `product_id` = (SELECT `id` FROM `product` WHERE `name` = ?)";
+		Review review = null;
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, productName);
+			rset = pstm.executeQuery();
+
+			if (rset.next()) {
+				review = new Review();
+				review.setId(rset.getInt("id"));
+				review.setStars(rset.getInt("stars"));
+				review.setComment(rset.getString("comment"));
+				AuthorDAO authorDAO = new AuthorDAO();
+				Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
+				review.setReviewer(reviewer);
+				ProductDAO productDAO = new ProductDAO();
+				Product product = productDAO.findById(rset.getInt("product_id"));
+				review.setProduct(product);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return review;
+	}
+
 	public void update(Review review) {
 		String sql = "UPDATE `review` SET `stars` = ?, `comment` = ?, `reviewer_id` = ?, `product_id` = ? WHERE `id` = ?";
 		Connection conn = null;
@@ -153,19 +198,19 @@ public class ReviewDAO {
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = conn.prepareStatement(sql);
-			
+
 			pstm.setInt(1, review.getStars());
 			pstm.setString(2, review.getComment());
 			pstm.setInt(3, review.getReviewer().getId());
 			pstm.setInt(4, review.getProduct().getId());
 			pstm.setInt(5, review.getId());
 
-			System.out.println("Review updated! -> Review ID: " + review.getId());
-			pstm.execute();
+			pstm.executeUpdate();
+
+			System.out.println("Review atualizada! -> Review ID: " + review.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-
 			try {
 				if (pstm != null) {
 					pstm.close();
