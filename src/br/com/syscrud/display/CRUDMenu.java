@@ -1,4 +1,4 @@
-package br.com.syscrud.crud;
+package br.com.syscrud.display;
 
 import java.util.Scanner;
 
@@ -23,5 +23,11 @@ public class CRUDMenu {
 	System.out.println(" Filme [1]\n Livro[2]\n Voltar [3]");
 	int category = myTeclado.nextInt();
 	return category;
+	}
+	
+	public static int promptForAnotherOperation(Scanner myTeclado) {
+		System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
+		int continueResponse = myTeclado.nextInt();
+		return continueResponse;
 	}
 }

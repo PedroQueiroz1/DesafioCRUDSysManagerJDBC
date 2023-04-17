@@ -2,6 +2,7 @@ package br.com.syscrud.management;
 
 import java.util.Scanner;
 
+import br.com.syscrud.converter.DoubleConverter;
 import br.com.syscrud.dao.BookDAO;
 import br.com.syscrud.model.Book;
 
@@ -15,7 +16,9 @@ public class BookManager {
 	    createBook.setName(myTeclado.nextLine());
 
 	    System.out.println("\nDigite o preço do " + createBook.getName() + ":");
-	    createBook.setPrice(myTeclado.nextDouble());
+	    String price = myTeclado.nextLine();
+		double priceDouble = DoubleConverter.parseDouble(price);
+		createBook.setPrice(priceDouble);
 
 	    System.out.println("\nDigite a quantidade do livro " + createBook.getName() + ":");
 	    createBook.setQuantity(myTeclado.nextInt());
@@ -56,8 +59,9 @@ public class BookManager {
 	    book.setName(newName);
 
 	    System.out.println("\nDigite o novo preço do " + book.getName() + ". Preço atual: R$" + book.getPrice());
-	    double newPrice = myTeclado.nextDouble();
-	    book.setPrice(newPrice);
+	    String newPrice = myTeclado.nextLine();
+		double newPriceDouble = DoubleConverter.parseDouble(newPrice);
+		book.setPrice(newPriceDouble);
 
 	    System.out.println("\nDigite a nova quantidade do " + book.getName() + ". Quantidade atual: " + book.getQuantity());
 	    int newQuantity = myTeclado.nextInt();

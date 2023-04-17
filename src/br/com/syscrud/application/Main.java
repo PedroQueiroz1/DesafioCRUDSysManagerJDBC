@@ -2,12 +2,12 @@ package br.com.syscrud.application;
 
 import java.util.Scanner;
 
-import br.com.syscrud.crud.CRUDMenu;
 import br.com.syscrud.dao.AuthorDAO;
 import br.com.syscrud.dao.BookDAO;
 import br.com.syscrud.dao.MovieDAO;
 import br.com.syscrud.dao.ProductDAO;
 import br.com.syscrud.dao.ReviewDAO;
+import br.com.syscrud.display.CRUDMenu;
 import br.com.syscrud.management.AuthorManager;
 import br.com.syscrud.management.BookManager;
 import br.com.syscrud.management.MovieManager;
@@ -29,7 +29,7 @@ public class Main {
 						int category = CRUDMenu.displayCategoryMenu(myTeclado);
 						if (category == 1) {
 							/*
-							 *  - - -FILME - - -
+							 * - - -FILME - - -
 							 */
 							MovieDAO movieDAO = new MovieDAO();
 							boolean back = false;
@@ -57,9 +57,8 @@ public class Main {
 								if (extraQuestion) {
 									boolean goodResponse = false;
 									while (!goodResponse) {
-										System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
-										int continueResponse = myTeclado.nextInt();
-										
+										int continueResponse = CRUDMenu.promptForAnotherOperation(myTeclado);
+
 										if (continueResponse == 0) {
 											goodResponse = true;
 											extraQuestion = false;
@@ -75,11 +74,14 @@ public class Main {
 								}
 							}
 						} else if (category == 2) {
+							/*
+							 *  - - - LIVRO - - -
+							 */
 							BookDAO bookDAO = new BookDAO();
 
 							boolean back = false;
 							while (!back) {
-								
+
 								int crudResponse = CRUDMenu.displayCRUDMenu(myTeclado);
 								boolean extraQuestion = true;
 
@@ -103,8 +105,7 @@ public class Main {
 								if (extraQuestion) {
 									boolean goodResponse = false;
 									while (!goodResponse) {
-										System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
-										int continueResponse = myTeclado.nextInt();
+										int continueResponse = CRUDMenu.promptForAnotherOperation(myTeclado);
 
 										if (continueResponse == 0) {
 											goodResponse = true;
@@ -160,8 +161,7 @@ public class Main {
 						if (extraQuestion) {
 							boolean goodResponse = false;
 							while (!goodResponse) {
-								System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
-								int continueResponse = myTeclado.nextInt();
+								int continueResponse = CRUDMenu.promptForAnotherOperation(myTeclado);
 
 								if (continueResponse == 0) {
 									mainMenu = false;
@@ -208,8 +208,8 @@ public class Main {
 						if (extraQuestion) {
 							boolean goodResponse = false;
 							while (!goodResponse) {
-								System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
-								int continueResponse = myTeclado.nextInt();
+								int continueResponse = CRUDMenu.promptForAnotherOperation(myTeclado);
+
 								if (continueResponse == 0) {
 									mainMenu = false;
 									goodResponse = true;

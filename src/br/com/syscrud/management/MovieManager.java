@@ -2,6 +2,7 @@ package br.com.syscrud.management;
 
 import java.util.Scanner;
 
+import br.com.syscrud.converter.DoubleConverter;
 import br.com.syscrud.dao.MovieDAO;
 import br.com.syscrud.model.Movie;
 
@@ -15,7 +16,9 @@ public class MovieManager {
 		createMovie.setName(myTeclado.nextLine());
 
 		System.out.println("\nDigite o preço do " + createMovie.getName() + ":");
-		createMovie.setPrice(myTeclado.nextDouble());
+		String price = myTeclado.nextLine();
+		double priceDouble = DoubleConverter.parseDouble(price);
+		createMovie.setPrice(priceDouble);
 
 		System.out.println("\nDigite a quantidade de " + createMovie.getName() + ":");
 		createMovie.setQuantity(myTeclado.nextInt());
@@ -55,8 +58,9 @@ public class MovieManager {
 	    movie.setName(newName);
 
 	    System.out.println("\nDigite o novo preço do " + movie.getName() + ". Preço atual: R$" + movie.getPrice());
-	    double newPrice = myTeclado.nextDouble();
-	    movie.setPrice(newPrice);
+		String newPrice = myTeclado.nextLine();
+		double newPriceDouble = DoubleConverter.parseDouble(newPrice);
+		movie.setPrice(newPriceDouble);
 
 	    System.out.println("\nDigite a nova quantidade do " + movie.getName() + ". Quantidade atual: " + movie.getQuantity());
 	    int newQuantity = myTeclado.nextInt();
