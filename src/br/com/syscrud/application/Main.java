@@ -20,7 +20,7 @@ public class Main {
 
 			while (menuPrincipal) {
 				System.out.println("Escolha um setor. Digite o número correspondente");
-				System.out.println(" Produto [1] \n Autor [2] \n Análise [3]");
+				System.out.println(" Produto [1]\n Autor [2]\n Análise [3]\n Sair [4]");
 				int sectorResponse = myTeclado.nextInt();
 
 				if (sectorResponse == 1) {
@@ -217,7 +217,7 @@ public class Main {
 							}
 						}
 					}
-				} else if (sectorResponse == 0) {
+				} else if (sectorResponse == 4) {
 					menuPrincipal = false;
 					break;
 				} else {
