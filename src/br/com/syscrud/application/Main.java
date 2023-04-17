@@ -226,33 +226,4 @@ public class Main {
 			}
 		}
 	}
-	/*
-	 * public static void newBook(Author author, Product product) { Book book = new
-	 * Book(); book.setName(product.getName()); book.setAuthor(author.getId()); }
-	 * 
-	 * ProductDAO productDAO = new ProductDAO(); boolean voltar = false;
-	 * 
-	 * while (!voltar) { System.out.
-	 * println("\nO que você gostaria de fazer? Digite o número correspondente.");
-	 * System.out.
-	 * println(" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]"
-	 * ); int crudResponse = myTeclado.nextInt(); boolean perguntaExtra = true;
-	 * 
-	 * if (crudResponse == 1) { ProductManager.productCreate(myTeclado, productDAO);
-	 * } else if (crudResponse == 2) { ProductManager.productRead(productDAO); }
-	 * else if (crudResponse == 3) { ProductManager.productUpdate(myTeclado,
-	 * productDAO); } else if (crudResponse == 4) {
-	 * ProductManager.productDelete(myTeclado, productDAO); } else if (crudResponse
-	 * == 5) { System.out.println(); voltar = true; perguntaExtra = false; } else {
-	 * System.out.println("Opção não reconhecida. Escolha uma opção válida.");
-	 * continue; } if (perguntaExtra) { boolean respostaValida = false; while
-	 * (!respostaValida) {
-	 * System.out.println("\nDeseja realizar outra operação? (Sim [1] / Não [0])");
-	 * int continueResponse = myTeclado.nextInt();
-	 * 
-	 * if (continueResponse == 0) { continuar = false; respostaValida = true; } else
-	 * if (continueResponse == 1) { respostaValida = true; } else {
-	 * System.out.println("Opção não reconhecida. Escolha uma opção válida."); } } }
-	 * }
-	 */
 }

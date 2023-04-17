@@ -31,6 +31,7 @@ public class BookManager {
 	        System.out.println("Nome: " + book.getName());
 	        System.out.println("Preço: R$" + book.getPrice());
 	        System.out.println("Quantidade: " + book.getQuantity());
+	        System.out.println("Gênero: " + book.getGenre());
 	    }
 	}
 	
