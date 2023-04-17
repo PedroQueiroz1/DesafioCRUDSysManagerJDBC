@@ -2,6 +2,7 @@ package br.com.syscrud.application;
 
 import java.util.Scanner;
 
+import br.com.syscrud.crud.CRUDMenu;
 import br.com.syscrud.dao.AuthorDAO;
 import br.com.syscrud.dao.BookDAO;
 import br.com.syscrud.dao.MovieDAO;
@@ -19,17 +20,13 @@ public class Main {
 			boolean mainMenu = true;
 
 			while (mainMenu) {
-				System.out.println("Escolha um setor. Digite o número correspondente");
-				System.out.println(" Produto [1]\n Autor [2]\n Análise [3]\n Sair [4]");
-				int sectorResponse = myTeclado.nextInt();
+				int sectorResponse = CRUDMenu.displaySectorMenu(myTeclado);
 
 				if (sectorResponse == 1) {
 					boolean categoryBoolean = false;
 
 					do {
-						System.out.println("Selecione a categoria de produto que você quer acessar.");
-						System.out.println(" Filme [1]\n Livro[2]\n Voltar [3]");
-						int category = myTeclado.nextInt();
+						int category = CRUDMenu.displayCategoryMenu(myTeclado);
 						if (category == 1) {
 							/*
 							 *  - - -FILME - - -
@@ -37,10 +34,7 @@ public class Main {
 							MovieDAO movieDAO = new MovieDAO();
 							boolean back = false;
 							while (!back) {
-								System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-								System.out.println(" Criar [1]\n Mostrar Todos [2]\n "
-										+ "Atualizar [3]\n Deletar [4]\n Voltar [5]");
-								int crudResponse = myTeclado.nextInt();
+								int crudResponse = CRUDMenu.displayCRUDMenu(myTeclado);
 								boolean extraQuestion = true;
 
 								if (crudResponse == 1) {
@@ -71,6 +65,7 @@ public class Main {
 											extraQuestion = false;
 											back = true;
 											mainMenu = false;
+											categoryBoolean = false;
 										} else if (continueResponse == 1) {
 											goodResponse = true;
 										} else {
@@ -84,10 +79,8 @@ public class Main {
 
 							boolean back = false;
 							while (!back) {
-								System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-								System.out.println(" Criar [1]\n Mostrar Todos [2]\n "
-										+ "Atualizar [3]\n Deletar [4]\n Voltar [5]");
-								int crudResponse = myTeclado.nextInt();
+								
+								int crudResponse = CRUDMenu.displayCRUDMenu(myTeclado);
 								boolean extraQuestion = true;
 
 								if (crudResponse == 1) {
@@ -118,6 +111,7 @@ public class Main {
 											extraQuestion = false;
 											back = true;
 											mainMenu = false;
+											categoryBoolean = false;
 										} else if (continueResponse == 1) {
 											goodResponse = true;
 										} else {
@@ -143,9 +137,7 @@ public class Main {
 					boolean back = false;
 
 					while (!back) {
-						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-						System.out.println(" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]");
-						int crudResponse = myTeclado.nextInt();
+						int crudResponse = CRUDMenu.displayCRUDMenu(myTeclado);
 						boolean extraQuestion = true;
 
 						if (crudResponse == 1) {
@@ -193,9 +185,7 @@ public class Main {
 					boolean back = false;
 
 					while (!back) {
-						System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-						System.out.println(" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]");
-						int crudResponse = myTeclado.nextInt();
+						int crudResponse = CRUDMenu.displayCRUDMenu(myTeclado);
 						boolean extraQuestion = true;
 
 						if (crudResponse == 1) {
