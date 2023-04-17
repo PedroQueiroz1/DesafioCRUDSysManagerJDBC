@@ -14,11 +14,11 @@ public class Main {
 
 	public static void main(String[] args) {
 		try (Scanner myTeclado = new Scanner(System.in)) {
-			boolean continuar = true;
+			boolean menuPrincipal = true;
 
-			while (continuar) {
+			while (menuPrincipal) {
 				System.out.println("Escolha um setor. Digite o número correspondente");
-				System.out.println(" Produto [1] \n Autor [2] \n Análises [3]");
+				System.out.println(" Produto [1] \n Autor [2] \n Análise [3]");
 				int sectorResponse = myTeclado.nextInt();
 
 				if (sectorResponse == 1) {
@@ -32,8 +32,8 @@ public class Main {
 						boolean voltar = false;
 						while (!voltar) {
 							System.out.println("\nO que você gostaria de fazer? Digite o número correspondente.");
-							System.out.println(
-									" Criar [1]\n Mostrar Todos [2]\n Atualizar [3]\n Deletar [4]\n Voltar [5]");
+							System.out.println(" Criar [1]\n Mostrar Todos [2]\n "
+									+ "Atualizar [3]\n Deletar [4]\n Voltar [5]");
 							int crudResponse = myTeclado.nextInt();
 							boolean perguntaExtra = true;
 
@@ -60,7 +60,7 @@ public class Main {
 									int continueResponse = myTeclado.nextInt();
 
 									if (continueResponse == 0) {
-										continuar = false;
+										menuPrincipal = false;
 										voltar = true;
 										respostaValida = true;
 									} else if (continueResponse == 1) {
@@ -113,7 +113,7 @@ public class Main {
 								int continueResponse = myTeclado.nextInt();
 
 								if (continueResponse == 0) {
-									continuar = false;
+									menuPrincipal = false;
 									respostaValida = true;
 								} else if (continueResponse == 1) {
 									respostaValida = true;
@@ -162,7 +162,7 @@ public class Main {
 								int continueResponse = myTeclado.nextInt();
 
 								if (continueResponse == 0) {
-									continuar = false;
+									menuPrincipal = false;
 									respostaValida = true;
 								} else if (continueResponse == 1) {
 									respostaValida = true;
@@ -173,7 +173,7 @@ public class Main {
 						}
 					}
 				} else if (sectorResponse == 0) {
-					continuar = false;
+					menuPrincipal = false;
 					break;
 				} else {
 					System.out.println("Opção não reconhecida. Escolha uma opção válida.");
