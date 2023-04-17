@@ -24,19 +24,19 @@ public class MovieDAO {
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 
-			pstmProduct = (JdbcPreparedStatement)  conn.prepareStatement(sqlProduct, Statement.RETURN_GENERATED_KEYS);
+			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct, Statement.RETURN_GENERATED_KEYS);
 			pstmProduct.setString(1, movie.getName());
 			pstmProduct.setDouble(2, movie.getPrice());
 			pstmProduct.setInt(3, movie.getQuantity());
 			pstmProduct.executeUpdate();
-			
+
 			ResultSet generatedKeys = pstmProduct.getGeneratedKeys();
 			if (generatedKeys.next()) {
-		    int productId = generatedKeys.getInt(1);
-			pstmMovie = (JdbcPreparedStatement) conn.prepareStatement(sqlMovie);
-	        pstmMovie.setInt(1, productId);
-	        pstmMovie.setInt(2, movie.getDuration());
-	        pstmMovie.executeUpdate();
+				int productId = generatedKeys.getInt(1);
+				pstmMovie = (JdbcPreparedStatement) conn.prepareStatement(sqlMovie);
+				pstmMovie.setInt(1, productId);
+				pstmMovie.setInt(2, movie.getDuration());
+				pstmMovie.executeUpdate();
 			}
 
 			System.out.println("Novo filme salvo! -> Nome do filme: " + movie.getName());
@@ -60,9 +60,8 @@ public class MovieDAO {
 	}
 
 	public List<Movie> findAll() {
-		String sql = "SELECT m.id, m.duration, p.name, p.price, p.quantity " +
-	             "FROM movie m " +
-	             "INNER JOIN product p ON m.id = p.id";
+		String sql = "SELECT m.id, m.duration, p.name, p.price, p.quantity " + "FROM movie m "
+				+ "INNER JOIN product p ON m.id = p.id";
 		List<Movie> movies = new ArrayList<>();
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -104,7 +103,7 @@ public class MovieDAO {
 	}
 
 	public Movie findById(int id) {
-		String sql = "SELECT * FROM `product` WHERE `id` = ?";
+		String sql = "SELECT p.*, m.duration FROM `product` p JOIN `movie` m ON p.id = m.id WHERE p.`id` = ?";
 		Movie movie = null;
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -143,107 +142,125 @@ public class MovieDAO {
 		}
 		return movie;
 	}
-	
+
 	public Movie findByName(String name) {
-	    String sql = "SELECT * FROM `product` WHERE `name` = ?";
-	    Movie movie = null;
-	    Connection conn = null;
-	    JdbcPreparedStatement pstm = null;
-	    ResultSet rset = null;
+		String sql = "SELECT * FROM `product` WHERE `name` = ?";
+		Movie movie = null;
+		Connection conn = null;
+		JdbcPreparedStatement pstm = null;
+		ResultSet rset = null;
 
-	    try {
-	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
-	        pstm.setString(1, name);
-	        rset = pstm.executeQuery();
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm.setString(1, name);
+			rset = pstm.executeQuery();
 
-	        if (rset.next()) {
-	            movie = new Movie();
-	            movie.setId(rset.getInt("id"));
-	            movie.setName(rset.getString("name"));
-	            movie.setPrice(rset.getDouble("price"));
-	            movie.setQuantity(rset.getInt("quantity"));
-	            movie.setDuration(rset.getInt("duration"));
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (rset != null) {
-	                rset.close();
-	            }
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return movie;
+			if (rset.next()) {
+				movie = new Movie();
+				movie.setId(rset.getInt("id"));
+				movie.setName(rset.getString("name"));
+				movie.setPrice(rset.getDouble("price"));
+				movie.setQuantity(rset.getInt("quantity"));
+				movie.setDuration(rset.getInt("duration"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return movie;
 	}
-	
+
 	public void update(Movie movie) {
-	    String sql = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ?, `duration` = ? WHERE `id` = ?";
-	    Connection conn = null;
-	    JdbcPreparedStatement pstm = null;
+		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
+		String sqlMovie = "UPDATE `movie` SET `duration` = ? WHERE `id` = ?";
+		Connection conn = null;
+		JdbcPreparedStatement pstmProduct = null;
+		JdbcPreparedStatement pstmMovie = null;
 
-	    try {
-	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct);
+			pstmMovie = (JdbcPreparedStatement) conn.prepareStatement(sqlMovie);
 
-	        pstm.setString(1, movie.getName());
-	        pstm.setDouble(2, movie.getPrice());
-	        pstm.setInt(3, movie.getQuantity());
-	        pstm.setInt(4, movie.getDuration());
-	        pstm.setInt(5, movie.getId());
+			pstmProduct.setString(1, movie.getName());
+			pstmProduct.setDouble(2, movie.getPrice());
+			pstmProduct.setInt(3, movie.getQuantity());
+			pstmProduct.setInt(4, movie.getId());
 
-	        System.out.println("Movie updated! -> Movie ID: " + movie.getId());
-	        pstm.execute();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+			pstmMovie.setInt(1, movie.getDuration());
+			pstmMovie.setInt(2, movie.getId());
+
+			conn.setAutoCommit(false);
+			pstmProduct.executeUpdate();
+			pstmMovie.execute();
+			conn.commit();
+
+			System.out.println("Filme atualizado! -> Filme ID: " + movie.getId());
+		} catch (Exception e) {
+			 try {
+		            if (conn != null) {
+		                conn.rollback();
+		            }
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		        }
+			 e.printStackTrace();
+		} finally {
+			try {
+				if (pstmProduct != null) {
+					pstmProduct.close();
+				}
+				if (pstmMovie != null) {
+					pstmMovie.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void deleteById(int id) {
-	    String sql = "DELETE FROM `product` WHERE `id` = ?";
-	    Connection conn = null;
-	    JdbcPreparedStatement pstm = null;
-	    
-	    try {
-	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
-	        pstm.setInt(1, id);
-	        
-	        System.out.println("Movie deleted! -> Movie ID: " + id);
-	        pstm.execute();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+		String sql = "DELETE FROM `movie` WHERE `id` = ?";
+		Connection conn = null;
+		JdbcPreparedStatement pstm = null;
+
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm.setInt(1, id);
+
+			pstm.execute();
+			System.out.println("Filme deletado! -> ID do filme: " + id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
-

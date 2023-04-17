@@ -72,7 +72,7 @@ public class Main {
 							}
 						}
 					} else if (categoria == 2) {
-						//Implementar aqui a funcionalidade de livro
+						// Implementar aqui a funcionalidade de livro
 					} else {
 						System.out.println("Opção não reconhecida. Escolha uma opção válida.");
 					}
