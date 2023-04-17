@@ -12,6 +12,7 @@ public class Product {
 
 	private int quantity;
 	
+	//1..N
 	private List<Review> reviews;
 
 	public int getId() {
