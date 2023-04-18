@@ -2,13 +2,13 @@ package br.com.syscrud.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Author;
+import br.com.syscrud.model.Review;
 
 public class AuthorDAO {
 
@@ -42,9 +42,8 @@ public class AuthorDAO {
 		}
 	}
 
-	public List<Author> findAll() {
+	public void findAll() {
 		String sql = "SELECT * FROM `author`";
-		List<Author> authors = new ArrayList<>();
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -53,12 +52,18 @@ public class AuthorDAO {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
+			
+			ReviewDAO reviewDAO = new ReviewDAO();
 
 			while (rset.next()) {
 				Author author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
-				authors.add(author);
+				
+				List<Review> reviews = reviewDAO.findByAuthorId(author.getId());
+				author.setReviews(reviews);
+				
+				author.printDetails();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,7 +82,6 @@ public class AuthorDAO {
 				e.printStackTrace();
 			}
 		}
-		return authors;
 	}
 
 	public Author findById(int id) {

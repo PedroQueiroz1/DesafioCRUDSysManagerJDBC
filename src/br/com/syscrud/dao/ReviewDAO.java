@@ -190,6 +190,100 @@ public class ReviewDAO {
 		return review;
 	}
 
+	public List<Review> findByAuthorId(int authorId) {
+		String sql = "SELECT * FROM `review` WHERE `reviewer_id` = ?";
+		List<Review> reviews = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, authorId);
+			rset = pstm.executeQuery();
+
+			while (rset.next()) {
+				Review review = new Review();
+				review.setId(rset.getInt("id"));
+				review.setStars(rset.getInt("stars"));
+				review.setComment(rset.getString("comment"));
+				AuthorDAO authorDAO = new AuthorDAO();
+				Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
+				review.setReviewer(reviewer);
+				ProductDAO productDAO = new ProductDAO();
+				Product product = productDAO.findById(rset.getInt("product_id"));
+				review.setProduct(product);
+
+				reviews.add(review);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return reviews;
+	}
+
+	public List<Review> findByProductId(int productId) {
+	    String sql = "SELECT * FROM `review` WHERE `product_id` = ?";
+		List<Review> reviews = new ArrayList<>();
+	    Connection conn = null;
+	    PreparedStatement pstm = null;
+	    ResultSet rset = null;
+
+	    try {
+	        conn = ConnectionFactory.createConnectionToMySQL();
+	        pstm = conn.prepareStatement(sql);
+	        pstm.setInt(1, productId);
+	        rset = pstm.executeQuery();
+
+	        if (rset.next()) {
+	    	    Review review = new Review();
+	            review.setId(rset.getInt("id"));
+	            review.setStars(rset.getInt("stars"));
+	            review.setComment(rset.getString("comment"));
+	            AuthorDAO authorDAO = new AuthorDAO();
+	            Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
+	            review.setReviewer(reviewer);
+	            ProductDAO productDAO = new ProductDAO();
+	            Product product = productDAO.findById(rset.getInt("product_id"));
+	            review.setProduct(product);
+	            
+	            reviews.add(review);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rset != null) {
+	                rset.close();
+	            }
+	            if (pstm != null) {
+	                pstm.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return reviews;
+	}
+	
 	public void update(Review review) {
 		String sql = "UPDATE `review` SET `stars` = ?, `comment` = ?, `reviewer_id` = ?, `product_id` = ? WHERE `id` = ?";
 		Connection conn = null;

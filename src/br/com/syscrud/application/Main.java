@@ -11,6 +11,7 @@ import br.com.syscrud.display.CRUDMenu;
 import br.com.syscrud.management.AuthorManager;
 import br.com.syscrud.management.BookManager;
 import br.com.syscrud.management.MovieManager;
+import br.com.syscrud.management.ProductManager;
 import br.com.syscrud.management.ReviewManager;
 
 public class Main {
@@ -75,7 +76,7 @@ public class Main {
 							}
 						} else if (category == 2) {
 							/*
-							 *  - - - LIVRO - - -
+							 * - - - LIVRO - - -
 							 */
 							BookDAO bookDAO = new BookDAO();
 
@@ -122,6 +123,49 @@ public class Main {
 								}
 							}
 						} else if (category == 3) {
+							/*
+							 * PRODUTOS - INFORMAÇÕES GERAIS
+							 */
+							ProductDAO productDAO = new ProductDAO();
+
+							boolean back = false;
+							while (!back) {
+
+								int crudResponse = CRUDMenu.displayCRUDMenuProduct(myTeclado);
+								boolean extraQuestion = true;
+
+								if (crudResponse == 1) {
+									ProductManager.productRead(productDAO);
+								} else if (crudResponse == 2) {
+									System.out.println();
+									back = true;
+									categoryBoolean = true;
+									extraQuestion = false;
+								} else {
+									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									continue;
+								}
+								if (extraQuestion) {
+									boolean goodResponse = false;
+									while (!goodResponse) {
+										int continueResponse = CRUDMenu.promptForAnotherOperation(myTeclado);
+
+										if (continueResponse == 0) {
+											goodResponse = true;
+											extraQuestion = false;
+											back = true;
+											mainMenu = false;
+											categoryBoolean = false;
+										} else if (continueResponse == 1) {
+											goodResponse = true;
+										} else {
+											System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+										}
+									}
+								}
+							}
+
+						} else if (category == 4) {
 							System.out.println();
 							categoryBoolean = true;
 							break;
@@ -132,7 +176,7 @@ public class Main {
 					} while (categoryBoolean);
 				} else if (sectorResponse == 2) {
 					/*
-					 * - - - - - - - - - AUTHOR - - - - - - - - -
+					 * - - - - - - - - - AUTOR - - - - - - - - -
 					 */
 					AuthorDAO authorDAO = new AuthorDAO();
 					boolean back = false;

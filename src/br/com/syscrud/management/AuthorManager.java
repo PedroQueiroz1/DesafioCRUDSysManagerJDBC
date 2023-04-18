@@ -18,13 +18,9 @@ public class AuthorManager {
 
 	public static void authorRead(AuthorDAO authorDAO) {
 		System.out.println("\n\nLista de autores:");
-		for (Author a : authorDAO.findAll()) {
-			System.out.println();
-			System.out.println("ID: " + a.getId());
-			System.out.println("Nome: " + a.getName());
-		}
+		authorDAO.findAll();
 	}
-
+	
 	public static void authorUpdate(Scanner myTeclado, AuthorDAO authorDAO) {
 		Author updateAuthor = new Author();
 
