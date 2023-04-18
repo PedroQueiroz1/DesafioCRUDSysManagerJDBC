@@ -1,5 +1,6 @@
 package br.com.syscrud.application;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import br.com.syscrud.dao.AuthorDAO;
@@ -16,7 +17,7 @@ import br.com.syscrud.management.ReviewManager;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException, Exception {
 		try (Scanner myTeclado = new Scanner(System.in)) {
 			boolean mainMenu = true;
 

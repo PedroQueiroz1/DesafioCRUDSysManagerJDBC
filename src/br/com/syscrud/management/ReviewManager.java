@@ -1,5 +1,6 @@
 package br.com.syscrud.management;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import br.com.syscrud.dao.AuthorDAO;
@@ -12,7 +13,7 @@ import br.com.syscrud.model.Review;
 public class ReviewManager {
 
 	public static void reviewCreate(Scanner myTeclado, ReviewDAO reviewDAO, AuthorDAO authorDAO,
-			ProductDAO productDAO) {
+			ProductDAO productDAO) throws SQLException, Exception {
 		Review createReview = new Review();
 		System.out.println("\nDigite o nome do produto a ser analisado");
 		myTeclado.nextLine();

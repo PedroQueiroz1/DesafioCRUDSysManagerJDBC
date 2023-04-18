@@ -1,1 +1,1 @@
-Utilizar o método da interface Printable no CRUD.
+Criar mais variáveis para as entidades.

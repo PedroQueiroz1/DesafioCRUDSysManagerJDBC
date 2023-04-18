@@ -2,6 +2,7 @@ package br.com.syscrud.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
@@ -12,7 +13,7 @@ import br.com.syscrud.model.Review;
 
 public class AuthorDAO {
 
-	public void save(Author author) {
+	public void save(Author author) throws SQLException, Exception {
 
 		String sql = "INSERT INTO `author` (`name`) VALUES (?)";
 
@@ -26,7 +27,7 @@ public class AuthorDAO {
 
 			System.out.println("Novo autor salvo! -> nome: " + author.getName());
 			pstm.execute();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -36,13 +37,13 @@ public class AuthorDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void findAll() {
+	public void findAll() throws SQLException, Exception {
 		String sql = "SELECT * FROM `author`";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -52,20 +53,20 @@ public class AuthorDAO {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
-			
+
 			ReviewDAO reviewDAO = new ReviewDAO();
 
 			while (rset.next()) {
 				Author author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
-				
+
 				List<Review> reviews = reviewDAO.findByAuthorId(author.getId());
 				author.setReviews(reviews);
-				
+
 				author.printDetails();
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -78,13 +79,13 @@ public class AuthorDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public Author findById(int id) {
+	public Author findById(int id) throws SQLException, Exception {
 		String sql = "SELECT * FROM `author` WHERE `id` = ?";
 		Author author = null;
 		Connection conn = null;
@@ -102,7 +103,7 @@ public class AuthorDAO {
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -115,14 +116,14 @@ public class AuthorDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return author;
 	}
 
-	public Author findByName(String name) {
+	public Author findByName(String name) throws SQLException, Exception {
 		String sql = "SELECT * FROM `author` WHERE `name` = ?";
 		Author author = null;
 		Connection conn = null;
@@ -140,7 +141,7 @@ public class AuthorDAO {
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -153,14 +154,14 @@ public class AuthorDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return author;
 	}
 
-	public void update(Author author) {
+	public void update(Author author) throws SQLException, Exception {
 		String sql = "UPDATE `author` SET `name` = ? WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -174,7 +175,7 @@ public class AuthorDAO {
 
 			System.out.println("O autor foi atualizado! -> ID do Autor: " + author.getId());
 			pstm.execute();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -184,13 +185,13 @@ public class AuthorDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void deleteById(int id) {
+	public void deleteById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `author` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -202,7 +203,7 @@ public class AuthorDAO {
 
 			System.out.println("Autor deletado! -> ID do autor deletado: " + id);
 			pstm.execute();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -212,7 +213,7 @@ public class AuthorDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
