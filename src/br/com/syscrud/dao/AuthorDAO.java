@@ -7,9 +7,11 @@ import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
+import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Author;
 import br.com.syscrud.model.Review;
+import br.com.syscrud.util.Constants;
 
 public class AuthorDAO {
 
@@ -25,11 +27,13 @@ public class AuthorDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setString(1, author.getName());
 
-			System.out.println("Novo autor salvo! -> nome: " + author.getName());
+			System.out.println("Novo autor salvo! -> Autor: " + author.getName());
 			pstm.execute();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
 		} finally {
+
 			try {
 				if (pstm != null) {
 					pstm.close();
@@ -38,12 +42,12 @@ public class AuthorDAO {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
 
-	public void findAll() throws SQLException, Exception {
+	public void findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `author`";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -56,7 +60,9 @@ public class AuthorDAO {
 
 			ReviewDAO reviewDAO = new ReviewDAO();
 
+			boolean found = false;
 			while (rset.next()) {
+				found = true;
 				Author author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
@@ -66,8 +72,15 @@ public class AuthorDAO {
 
 				author.printDetails();
 			}
+			if (!found) {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -80,12 +93,12 @@ public class AuthorDAO {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
 
-	public Author findById(int id) throws SQLException, Exception {
+	public Author findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author` WHERE `id` = ?";
 		Author author = null;
 		Connection conn = null;
@@ -102,9 +115,15 @@ public class AuthorDAO {
 				author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -117,13 +136,13 @@ public class AuthorDAO {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return author;
 	}
 
-	public Author findByName(String name) throws SQLException, Exception {
+	public Author findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `author` WHERE `name` = ?";
 		Author author = null;
 		Connection conn = null;
@@ -140,9 +159,16 @@ public class AuthorDAO {
 				author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
+			}else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -155,7 +181,7 @@ public class AuthorDAO {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return author;
@@ -175,8 +201,13 @@ public class AuthorDAO {
 
 			System.out.println("O autor foi atualizado! -> ID do Autor: " + author.getId());
 			pstm.execute();
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (pstm != null) {
@@ -186,7 +217,7 @@ public class AuthorDAO {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
@@ -201,10 +232,20 @@ public class AuthorDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
-			System.out.println("Autor deletado! -> ID do autor deletado: " + id);
-			pstm.execute();
+			int rowsAffected = pstm.executeUpdate();
+
+			if (rowsAffected > 0) {
+			System.out.println("Autor deletado!");
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (pstm != null) {
@@ -214,7 +255,7 @@ public class AuthorDAO {
 					conn.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}

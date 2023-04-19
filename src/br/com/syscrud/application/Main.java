@@ -14,6 +14,7 @@ import br.com.syscrud.management.BookManager;
 import br.com.syscrud.management.MovieManager;
 import br.com.syscrud.management.ProductManager;
 import br.com.syscrud.management.ReviewManager;
+import br.com.syscrud.util.Constants;
 
 public class Main {
 
@@ -53,7 +54,7 @@ public class Main {
 									categoryBoolean = true;
 									extraQuestion = false;
 								} else {
-									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 									continue;
 								}
 								if (extraQuestion) {
@@ -70,7 +71,7 @@ public class Main {
 										} else if (continueResponse == 1) {
 											goodResponse = true;
 										} else {
-											System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+											System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 										}
 									}
 								}
@@ -101,7 +102,7 @@ public class Main {
 									categoryBoolean = true;
 									extraQuestion = false;
 								} else {
-									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 									continue;
 								}
 								if (extraQuestion) {
@@ -118,7 +119,7 @@ public class Main {
 										} else if (continueResponse == 1) {
 											goodResponse = true;
 										} else {
-											System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+											System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 										}
 									}
 								}
@@ -143,7 +144,7 @@ public class Main {
 									categoryBoolean = true;
 									extraQuestion = false;
 								} else {
-									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 									continue;
 								}
 								if (extraQuestion) {
@@ -160,7 +161,7 @@ public class Main {
 										} else if (continueResponse == 1) {
 											goodResponse = true;
 										} else {
-											System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+											System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 										}
 									}
 								}
@@ -171,7 +172,7 @@ public class Main {
 							categoryBoolean = true;
 							break;
 						} else {
-							System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+							System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 							categoryBoolean = true;
 						}
 					} while (categoryBoolean);
@@ -199,7 +200,7 @@ public class Main {
 							back = true;
 							extraQuestion = false;
 						} else {
-							System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+							System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 							continue;
 						}
 
@@ -215,7 +216,7 @@ public class Main {
 								} else if (continueResponse == 1) {
 									goodResponse = true;
 								} else {
-									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 								}
 							}
 						}
@@ -246,7 +247,7 @@ public class Main {
 							back = true;
 							extraQuestion = false;
 						} else {
-							System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+							System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 							continue;
 						}
 
@@ -262,7 +263,7 @@ public class Main {
 								} else if (continueResponse == 1) {
 									goodResponse = true;
 								} else {
-									System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+									System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 								}
 							}
 						}
@@ -271,7 +272,7 @@ public class Main {
 					System.out.println("Encerrando o programa...");
 					mainMenu = false;
 				} else {
-					System.out.println("Opção não reconhecida. Escolha uma opção válida.");
+					System.out.println(Constants.ERROR_MESSAGE_INVALID_OPTION);
 				}
 			}
 		}

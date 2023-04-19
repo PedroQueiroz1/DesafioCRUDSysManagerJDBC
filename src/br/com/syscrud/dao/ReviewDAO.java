@@ -3,19 +3,22 @@ package br.com.syscrud.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
+import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Author;
 import br.com.syscrud.model.Product;
 import br.com.syscrud.model.Review;
+import br.com.syscrud.util.Constants;
 
 public class ReviewDAO {
 
-	public void save(Review review) {
+	public void save(Review review) throws SQLException, Exception {
 
 		String sql = "INSERT INTO `review` (`stars`, `comment`, `reviewer_id`, `product_id`) VALUES (?, ?, ?, ?)";
 
@@ -32,8 +35,9 @@ public class ReviewDAO {
 
 			System.out.println("Nova análise salva! -> Análise: " + review.getComment());
 			pstm.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
 		} finally {
 
 			try {
@@ -43,13 +47,13 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
 
-	public List<Review> findAll() {
+	public List<Review> findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM review";
 		List<Review> reviews = new ArrayList<Review>();
 		Connection conn = null;
@@ -79,8 +83,12 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -92,15 +100,17 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
-
+		if (reviews.isEmpty()) {
+			throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+		}
 		return reviews;
 	}
 
-	public Review findById(int id) {
+	public Review findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
 		String sql = "SELECT * FROM `review` WHERE `id` = ?";
 		Review review = null;
 		Connection conn = null;
@@ -124,9 +134,16 @@ public class ReviewDAO {
 				ProductDAO productDAO = new ProductDAO();
 				Product product = productDAO.findById(rset.getInt("product_id"));
 				review.setProduct(product);
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -138,15 +155,15 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return review;
 	}
 
-	public Review findByName(String productName) {
-		String sql = "SELECT * FROM `review` WHERE `product_id` = (SELECT `id` FROM `product` WHERE `name` = ?)";
+	public Review findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+		String sql = "SELECT * FROM `review` WHERE `product_id` " + "= (SELECT `id` FROM `product` WHERE `name` = ?)";
 		Review review = null;
 		Connection conn = null;
 		PreparedStatement pstm = null;
@@ -155,7 +172,7 @@ public class ReviewDAO {
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, productName);
+			pstm.setString(1, name);
 			rset = pstm.executeQuery();
 
 			if (rset.next()) {
@@ -169,9 +186,16 @@ public class ReviewDAO {
 				ProductDAO productDAO = new ProductDAO();
 				Product product = productDAO.findById(rset.getInt("product_id"));
 				review.setProduct(product);
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -183,14 +207,15 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return review;
 	}
 
-	public List<Review> findByAuthorId(int authorId) {
+	public List<Review> findByAuthorId(int authorId)
+			throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `review` WHERE `reviewer_id` = ?";
 		List<Review> reviews = new ArrayList<>();
 		Connection conn = null;
@@ -217,8 +242,15 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (reviews.isEmpty()) {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -230,62 +262,73 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return reviews;
 	}
 
-	public List<Review> findByProductId(int productId) {
-	    String sql = "SELECT * FROM `review` WHERE `product_id` = ?";
+	public List<Review> findByProductId(int productId)
+			throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+		String sql = "SELECT * FROM `review` WHERE `product_id` = ?";
 		List<Review> reviews = new ArrayList<>();
-	    Connection conn = null;
-	    PreparedStatement pstm = null;
-	    ResultSet rset = null;
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
 
-	    try {
-	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = conn.prepareStatement(sql);
-	        pstm.setInt(1, productId);
-	        rset = pstm.executeQuery();
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, productId);
+			rset = pstm.executeQuery();
 
-	        if (rset.next()) {
-	    	    Review review = new Review();
-	            review.setId(rset.getInt("id"));
-	            review.setStars(rset.getInt("stars"));
-	            review.setComment(rset.getString("comment"));
-	            AuthorDAO authorDAO = new AuthorDAO();
-	            Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
-	            review.setReviewer(reviewer);
-	            ProductDAO productDAO = new ProductDAO();
-	            Product product = productDAO.findById(rset.getInt("product_id"));
-	            review.setProduct(product);
-	            
-	            reviews.add(review);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (rset != null) {
-	                rset.close();
-	            }
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return reviews;
+			if (rset.next()) {
+				Review review = new Review();
+				review.setId(rset.getInt("id"));
+				review.setStars(rset.getInt("stars"));
+				review.setComment(rset.getString("comment"));
+				AuthorDAO authorDAO = new AuthorDAO();
+				Author reviewer = authorDAO.findById(rset.getInt("reviewer_id"));
+				review.setReviewer(reviewer);
+				ProductDAO productDAO = new ProductDAO();
+				Product product = productDAO.findById(rset.getInt("product_id"));
+				review.setProduct(product);
+
+				reviews.add(review);
+			}
+
+			if (reviews.isEmpty()) {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
+		} finally {
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+			}
+		}
+		return reviews;
 	}
-	
-	public void update(Review review) {
-		String sql = "UPDATE `review` SET `stars` = ?, `comment` = ?, `reviewer_id` = ?, `product_id` = ? WHERE `id` = ?";
+
+	public void update(Review review) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+		String sql = "UPDATE `review` SET `stars` = ?, `comment` = ?, "
+				+ "`reviewer_id` = ?, `product_id` = ? WHERE `id` = ?";
 		Connection conn = null;
 		PreparedStatement pstm = null;
 
@@ -299,11 +342,19 @@ public class ReviewDAO {
 			pstm.setInt(4, review.getProduct().getId());
 			pstm.setInt(5, review.getId());
 
-			pstm.executeUpdate();
+			int rowsAffected = pstm.executeUpdate();
 
-			System.out.println("Review atualizada! -> Review ID: " + review.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (rowsAffected == 0) {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
+			System.out.println("Comentário atualizado! -> ID do comentário: " + review.getId());
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (pstm != null) {
@@ -312,13 +363,13 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
 
-	public void deleteById(int id) {
+	public void deleteById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "DELETE FROM `review` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -328,10 +379,20 @@ public class ReviewDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
-			System.out.println("Review deleted! -> Review ID: " + id);
-			pstm.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
+			int rowsAffected = pstm.executeUpdate();
+
+			if (rowsAffected > 0) {
+				System.out.println("Comentário deletado! -> ID do comentário: " + id);
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (pstm != null) {
@@ -340,8 +401,8 @@ public class ReviewDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}

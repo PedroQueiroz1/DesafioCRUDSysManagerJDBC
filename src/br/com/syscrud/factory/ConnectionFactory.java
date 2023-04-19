@@ -2,6 +2,7 @@ package br.com.syscrud.factory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConnectionFactory {
 
@@ -13,7 +14,7 @@ public class ConnectionFactory {
 	
 	
 	// Conexão com o banco de dados
-	public static Connection createConnectionToMySQL() throws Exception{
+	public static Connection createConnectionToMySQL() throws SQLException, ClassNotFoundException {
 		
 		//Faz com que a classe seja carregada pela JVM
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -27,7 +28,7 @@ public class ConnectionFactory {
 		return connection;
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		
 		//Recuperar conexão com o banco
 		Connection con = createConnectionToMySQL();

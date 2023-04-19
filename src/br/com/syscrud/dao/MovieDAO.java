@@ -2,18 +2,21 @@ package br.com.syscrud.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
+import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Movie;
+import br.com.syscrud.util.Constants;
 
 public class MovieDAO {
 
-	public void save(Movie movie) {
+	public void save(Movie movie) throws SQLException, Exception {
 		String sqlProduct = "INSERT INTO product (name, price, quantity) VALUES (?, ?, ?)";
 		String sqlMovie = "INSERT INTO movie (id, duration) VALUES (?, ?)";
 
@@ -37,12 +40,13 @@ public class MovieDAO {
 				pstmMovie.setInt(1, productId);
 				pstmMovie.setInt(2, movie.getDuration());
 				pstmMovie.executeUpdate();
+				System.out.println("Nova filme salvo! -> Filme: " + movie.getName());
 			}
-
-			System.out.println("Novo filme salvo! -> Nome do filme: " + movie.getName());
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
 		} finally {
+
 			try {
 				if (pstmProduct != null) {
 					pstmProduct.close();
@@ -53,13 +57,13 @@ public class MovieDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
 
-	public List<Movie> findAll() {
+	public List<Movie> findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT m.id, m.duration, p.name, p.price, p.quantity " + "FROM movie m "
 				+ "INNER JOIN product p ON m.id = p.id";
 		List<Movie> movies = new ArrayList<>();
@@ -82,8 +86,12 @@ public class MovieDAO {
 
 				movies.add(movie);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -95,14 +103,17 @@ public class MovieDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
+		}
+		if (movies.isEmpty()) {
+			throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 		}
 		return movies;
 	}
 
-	public Movie findById(int id) {
+	public Movie findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
 		String sql = "SELECT p.*, m.duration FROM `product` p JOIN `movie` m ON p.id = m.id WHERE p.`id` = ?";
 		Movie movie = null;
 		Connection conn = null;
@@ -122,9 +133,16 @@ public class MovieDAO {
 				movie.setPrice(rset.getDouble("price"));
 				movie.setQuantity(rset.getInt("quantity"));
 				movie.setDuration(rset.getInt("duration"));
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -136,14 +154,14 @@ public class MovieDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return movie;
 	}
 
-	public Movie findByName(String name) {
+	public Movie findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Movie movie = null;
 		Connection conn = null;
@@ -163,9 +181,16 @@ public class MovieDAO {
 				movie.setPrice(rset.getDouble("price"));
 				movie.setQuantity(rset.getInt("quantity"));
 				movie.setDuration(rset.getInt("duration"));
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (rset != null) {
@@ -177,14 +202,14 @@ public class MovieDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 		return movie;
 	}
 
-	public void update(Movie movie) {
+	public void update(Movie movie) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
 		String sqlMovie = "UPDATE `movie` SET `duration` = ? WHERE `id` = ?";
 		Connection conn = null;
@@ -205,20 +230,21 @@ public class MovieDAO {
 			pstmMovie.setInt(2, movie.getId());
 
 			conn.setAutoCommit(false);
-			pstmProduct.executeUpdate();
-			pstmMovie.execute();
+			int rowsAffectedProduct = pstmProduct.executeUpdate();
+			int rowsAffectedMovie = pstmMovie.executeUpdate();
 			conn.commit();
 
-			System.out.println("Filme atualizado! -> Filme ID: " + movie.getId());
-		} catch (Exception e) {
-			 try {
-		            if (conn != null) {
-		                conn.rollback();
-		            }
-		        } catch (Exception ex) {
-		            ex.printStackTrace();
-		        }
-			 e.printStackTrace();
+			if (rowsAffectedProduct == 0 && rowsAffectedMovie == 0) {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
+			System.out.println("Filme atualizado! -> ID do filme: " + movie.getId());
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (pstmProduct != null) {
@@ -230,13 +256,13 @@ public class MovieDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}
 
-	public void deleteById(int id) {
+	public void deleteById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -246,10 +272,20 @@ public class MovieDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
-			pstm.execute();
-			System.out.println("Filme deletado! -> ID do filme: " + id);
-		} catch (Exception e) {
-			e.printStackTrace();
+			int rowsAffected = pstm.executeUpdate();
+
+			if (rowsAffected > 0) {
+				System.out.println("Filme deletado! -> ID do filme: " + id);
+			} else {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
 		} finally {
 			try {
 				if (pstm != null) {
@@ -258,8 +294,8 @@ public class MovieDAO {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
 	}

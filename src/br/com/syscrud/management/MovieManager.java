@@ -1,5 +1,6 @@
 package br.com.syscrud.management;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import br.com.syscrud.converter.DoubleConverter;
@@ -8,7 +9,7 @@ import br.com.syscrud.model.Movie;
 
 public class MovieManager {
 
-	public static void movieCreate(Scanner myTeclado, MovieDAO movieDAO) {
+	public static void movieCreate(Scanner myTeclado, MovieDAO movieDAO) throws SQLException, Exception {
 		Movie createMovie = new Movie();
 
 		System.out.println("\nDigite o nome do filme a ser criado:");
@@ -29,7 +30,7 @@ public class MovieManager {
 		movieDAO.save(createMovie);
 	}
 
-	public static void movieRead(MovieDAO movieDAO) {
+	public static void movieRead(MovieDAO movieDAO) throws SQLException, Exception {
 		System.out.println("\n\nLista de filmes:");
 		for (Movie movie : movieDAO.findAll()) {
 			System.out.println();
@@ -41,7 +42,7 @@ public class MovieManager {
 		}
 	}
 
-	public static void movieUpdate(Scanner myTeclado, MovieDAO movieDAO) {
+	public static void movieUpdate(Scanner myTeclado, MovieDAO movieDAO) throws SQLException, Exception {
 		
 		System.out.println("\nDigite o ID do filme a ser alterado:");
 		int movieId = myTeclado.nextInt();
@@ -73,7 +74,7 @@ public class MovieManager {
 		movieDAO.update(movie);
 	}
 
-	  public static void movieDelete(Scanner myTeclado, MovieDAO movieDAO) {
+	  public static void movieDelete(Scanner myTeclado, MovieDAO movieDAO) throws SQLException, Exception {
 	        System.out.println("\nDigite o ID do filme a ser deletado.");
 	        movieDAO.deleteById(myTeclado.nextInt());
 	    }

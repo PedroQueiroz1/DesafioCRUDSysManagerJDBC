@@ -1,5 +1,6 @@
 package br.com.syscrud.management;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import br.com.syscrud.converter.DoubleConverter;
@@ -8,7 +9,7 @@ import br.com.syscrud.model.Book;
 
 public class BookManager {
 
-	public static void bookCreate(Scanner myTeclado, BookDAO bookDAO) {
+	public static void bookCreate(Scanner myTeclado, BookDAO bookDAO) throws SQLException, Exception {
 	    Book createBook = new Book();
 
 	    System.out.println("\nDigite o nome do livro a ser criado:");
@@ -30,7 +31,7 @@ public class BookManager {
 	    bookDAO.save(createBook);
 	}
 	
-	public static void bookRead(BookDAO bookDAO) {
+	public static void bookRead(BookDAO bookDAO) throws SQLException, Exception {
 	    System.out.println("\n\nLista de livros:");
 	    for (Book book : bookDAO.findAll()) {
 	        System.out.println();
@@ -42,7 +43,7 @@ public class BookManager {
 	    }
 	}
 	
-	public static void bookUpdate(Scanner myTeclado, BookDAO bookDAO) {
+	public static void bookUpdate(Scanner myTeclado, BookDAO bookDAO) throws SQLException, Exception {
 
 	    System.out.println("\nDigite o ID do livro a ser alterado:");
 	    int bookId = myTeclado.nextInt();
@@ -75,7 +76,7 @@ public class BookManager {
 	    bookDAO.update(book);
 	}
 	
-	public static void bookDelete(Scanner myTeclado, BookDAO bookDAO) {
+	public static void bookDelete(Scanner myTeclado, BookDAO bookDAO) throws SQLException, Exception {
 	    System.out.println("\nDigite o ID do livro a ser deletado.");
 	    bookDAO.deleteById(myTeclado.nextInt());
 	}

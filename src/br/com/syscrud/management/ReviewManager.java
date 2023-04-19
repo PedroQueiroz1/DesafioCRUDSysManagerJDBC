@@ -1,6 +1,5 @@
 package br.com.syscrud.management;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 import br.com.syscrud.dao.AuthorDAO;
@@ -12,8 +11,8 @@ import br.com.syscrud.model.Review;
 
 public class ReviewManager {
 
-	public static void reviewCreate(Scanner myTeclado, ReviewDAO reviewDAO, AuthorDAO authorDAO,
-			ProductDAO productDAO) throws SQLException, Exception {
+	public static void reviewCreate(Scanner myTeclado, ReviewDAO reviewDAO, AuthorDAO authorDAO, ProductDAO productDAO)
+			throws Exception {
 		Review createReview = new Review();
 		System.out.println("\nDigite o nome do produto a ser analisado");
 		myTeclado.nextLine();
@@ -44,7 +43,7 @@ public class ReviewManager {
 		reviewDAO.save(createReview);
 	}
 
-	public static void reviewRead(ReviewDAO reviewDAO) {
+	public static void reviewRead(ReviewDAO reviewDAO) throws Exception {
 		System.out.println("\n\nLista de reviews:");
 		for (Review r : reviewDAO.findAll()) {
 			System.out.println();
@@ -56,31 +55,26 @@ public class ReviewManager {
 		}
 	}
 
-	public static void reviewUpdate(Scanner myTeclado, ReviewDAO reviewDAO) {
-	    System.out.println("\nDigite o ID da review a ser alterada:");
-	    int reviewId = myTeclado.nextInt();
-	    myTeclado.nextLine();
+	public static void reviewUpdate(Scanner myTeclado, ReviewDAO reviewDAO) throws Exception {
+		System.out.println("\nDigite o ID da review a ser alterada:");
+		int reviewId = myTeclado.nextInt();
+		myTeclado.nextLine();
 
-	    Review review = reviewDAO.findById(reviewId);
-	    if (review == null) {
-	        System.out.println("Review não encontrada.");
-	        return;
-	    }
+		Review review = reviewDAO.findById(reviewId);
 
-	    System.out.println("\nDigite a nova quantidade de estrelas. Quantidade atual: " + review.getStars());
-	    int newStars = myTeclado.nextInt();
-	    review.setStars(newStars);
+		System.out.println("\nDigite a nova quantidade de estrelas. Quantidade atual: " + review.getStars());
+		int newStars = myTeclado.nextInt();
+		review.setStars(newStars);
 
-	    System.out.println("\nDigite o novo comentário. Comentário atual: " + review.getComment());
-	    myTeclado.nextLine();
-	    String newComment = myTeclado.nextLine();
-	    review.setComment(newComment);
+		System.out.println("\nDigite o novo comentário. Comentário atual: " + review.getComment());
+		myTeclado.nextLine();
+		String newComment = myTeclado.nextLine();
+		review.setComment(newComment);
 
-	    reviewDAO.update(review);
+		reviewDAO.update(review);
 	}
 
-
-	public static void reviewDelete(Scanner myTeclado, ReviewDAO reviewDAO) {
+	public static void reviewDelete(Scanner myTeclado, ReviewDAO reviewDAO) throws Exception {
 		System.out.println("\nDigite o ID da review a ser deletada.");
 		reviewDAO.deleteById(myTeclado.nextInt());
 	}
