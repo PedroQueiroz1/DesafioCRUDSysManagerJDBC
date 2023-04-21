@@ -18,6 +18,13 @@ import br.com.syscrud.util.Constants;
 
 public class Main {
 
+/*
+ * ---------------------------------------
+ * Nome: Pedro Henrique Queiroz
+ * Email: pedroqueiroz0411@outlook.com.br
+ * ---------------------------------------
+ */
+	
 	public static void main(String[] args) throws SQLException, Exception {
 		try (Scanner myTeclado = new Scanner(System.in)) {
 			boolean mainMenu = true;
