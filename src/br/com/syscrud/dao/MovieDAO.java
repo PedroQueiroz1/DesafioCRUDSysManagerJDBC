@@ -108,7 +108,7 @@ public class MovieDAO {
 			}
 		}
 		if (movies.isEmpty()) {
-			throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 		}
 		return movies;
 	}
