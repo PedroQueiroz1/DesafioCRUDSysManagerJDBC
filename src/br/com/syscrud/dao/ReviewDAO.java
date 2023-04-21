@@ -242,9 +242,11 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
+/*	
 			if (reviews.isEmpty()) {
 				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
+*/
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -297,11 +299,11 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
-
+/*
 			if (reviews.isEmpty()) {
 				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
-
+*/
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;

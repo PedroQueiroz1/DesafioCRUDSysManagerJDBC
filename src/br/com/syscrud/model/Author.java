@@ -49,7 +49,7 @@ public class Author implements Printable{
 		System.out.println("\nAutor - ");
 		System.out.println("Id: " + id);
 		System.out.println("Nome: " + name);
-		System.out.println("\nAnálises realizadas: ");
+		System.out.println("\nComentários realizados: ");
 		
 		if (reviews != null && !reviews.isEmpty()) {
 			for (Review review : reviews) {
@@ -59,7 +59,7 @@ public class Author implements Printable{
 				System.out.println("-----------------------------");
 			}
 		} else {
-			System.out.println("Nenhuma análise realizada.");
+			System.out.println("Nenhum comentário disponível.\n");
 		}
 	}
 }

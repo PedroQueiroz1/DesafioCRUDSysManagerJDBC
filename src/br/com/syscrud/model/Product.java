@@ -63,7 +63,7 @@ public class Product implements Printable{
 	    System.out.println("Nome: " + name);
 	    System.out.println("Preço: " + price);
 	    System.out.println("Quantidade: " + quantity);
-	    System.out.println("\nAnálises: ");
+	    System.out.println("\nComentários: ");
 	    
 	    if (reviews != null && !reviews.isEmpty()) {
 	        for (Review review : reviews) {
@@ -73,7 +73,7 @@ public class Product implements Printable{
 	            System.out.println("-----------------------------");
 	        }
 	    } else {
-	        System.out.println("Nenhuma análise disponível.");
+	        System.out.println("Nenhum comentário disponível.\n");
 	    }
 	}
 	

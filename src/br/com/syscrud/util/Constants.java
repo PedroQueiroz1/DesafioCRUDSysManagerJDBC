@@ -8,6 +8,4 @@ public class Constants {
 	public static final String ERROR_MESSAGE_NOT_FOUND = "Nada foi encontrado";
 	public static final String ERROR_MESSAGE_INVALID_OPTION = "Opção não reconhecida. Escolha uma opção válida.";
 
-	
-	
 }

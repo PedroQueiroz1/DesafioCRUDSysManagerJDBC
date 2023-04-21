@@ -1,1 +1,3 @@
 Criar mais variáveis para as entidades.
+Organizar melhor o código.
+Testar, passar o pente fino para procurar por bugs.
