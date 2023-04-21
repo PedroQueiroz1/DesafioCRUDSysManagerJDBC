@@ -108,7 +108,7 @@ public class BookDAO {
 			}
 		}
 		if (books.isEmpty()) {
-			throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 		}
 		return books;
 	}
@@ -209,21 +209,33 @@ public class BookDAO {
 
 	public void update(Book book) throws SQLException, Exception {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
+		String sqlBook = "Update `book` SET `genre` = ? WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstmProduct = null;
+		JdbcPreparedStatement pstmBook = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct);
+			pstmBook = (JdbcPreparedStatement) conn.prepareStatement(sqlBook);
 
+			
 			pstmProduct.setString(1, book.getName());
 			pstmProduct.setDouble(2, book.getPrice());
 			pstmProduct.setInt(3, book.getQuantity());
 			pstmProduct.setInt(4, book.getId());
+			
+			pstmBook.setString(1, book.getGenre());
+			pstmBook.setInt(2, book.getId());
 
 			conn.setAutoCommit(false);
-			pstmProduct.executeUpdate();
+			int rowsAffectedProduct = pstmProduct.executeUpdate();
+			int rowsAffectedBook = pstmBook.executeUpdate();
 			conn.commit();
+			
+			if (rowsAffectedProduct == 0 && rowsAffectedBook == 0) {
+				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
 
 			System.out.println("Livro atualizado! -> ID do livro: " + book.getId());
 			

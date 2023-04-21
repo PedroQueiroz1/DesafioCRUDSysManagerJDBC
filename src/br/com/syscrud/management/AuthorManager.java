@@ -18,7 +18,7 @@ public class AuthorManager {
 	}
 
 	public static void authorRead(AuthorDAO authorDAO) throws SQLException, Exception {
-		System.out.println("\n\nLista de autores:");
+		System.out.println("\n\nLista de TODOS os autores já criados");
 		authorDAO.findAll();
 	}
 	

@@ -4,8 +4,9 @@ import br.com.syscrud.dao.ProductDAO;
 
 public class ProductManager {
 
+	
 	public static void productRead(ProductDAO productDAO) throws Exception {
-		System.out.println("\n\nLista de produtos:");
+		System.out.println("\n\nLista de TODOS os produtos já criados:");
 		productDAO.findAll();
 	}
 }

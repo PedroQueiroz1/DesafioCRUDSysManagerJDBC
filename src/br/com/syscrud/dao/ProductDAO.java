@@ -15,7 +15,7 @@ import br.com.syscrud.util.Constants;
 
 public class ProductDAO {
 
-	public Product findById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public Product findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `id` = ?";
 		Product product = null;
 		Connection conn = null;
@@ -61,7 +61,7 @@ public class ProductDAO {
 	    return product;
 	}
 	
-	public Product findByName(String name) throws ClassNotFoundException, SQLException, ResourceNotFoundException {
+	public Product findByName(String name) throws ClassNotFoundException, SQLException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Product product = null;
 		Connection conn = null;
@@ -109,7 +109,7 @@ public class ProductDAO {
 		return product;
 	}
 
-	public void findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public void findAll() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product`";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -122,9 +122,7 @@ public class ProductDAO {
 
 			ReviewDAO reviewDAO = new ReviewDAO();
 
-			boolean found = false;
 			while (rset.next()) {
-				found = true;
 				Product product = new Product();
 				product.setId(rset.getInt("id"));
 				product.setName(rset.getString("name"));
@@ -133,11 +131,8 @@ public class ProductDAO {
 
 				List<Review> reviews = reviewDAO.findByProductId(product.getId());
 				product.setReviews(reviews);
-
+				
 				product.printDetails();
-			}
-			if (!found) {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
