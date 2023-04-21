@@ -159,7 +159,7 @@ public class AuthorDAO {
 				author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
-			}else {
+			} else {
 				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
@@ -201,7 +201,7 @@ public class AuthorDAO {
 
 			System.out.println("O autor foi atualizado! -> ID do Autor: " + author.getId());
 			pstm.execute();
-			
+
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -229,17 +229,22 @@ public class AuthorDAO {
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
+
+			ReviewDAO reviewDAO = new ReviewDAO();
+			reviewDAO.deleteByAuthorId(id);
+
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
 			int rowsAffected = pstm.executeUpdate();
 
+			System.out.println(rowsAffected + " comentários deletados!");
+
 			if (rowsAffected > 0) {
-			System.out.println("Autor deletado!");
+				System.out.println("Autor deletado!");
 			} else {
 				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
-			
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;

@@ -242,11 +242,6 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
-/*	
-			if (reviews.isEmpty()) {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
-*/
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -299,11 +294,6 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
-/*
-			if (reviews.isEmpty()) {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
-*/
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -407,5 +397,38 @@ public class ReviewDAO {
 				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
+	}
+
+	public void deleteByAuthorId(int authorId) throws SQLException, Exception {
+	    String sql = "DELETE FROM `review` WHERE `reviewer_id` = ?";
+	    Connection conn = null;
+	    PreparedStatement pstm = null;
+
+	    try {
+	        conn = ConnectionFactory.createConnectionToMySQL();
+	        pstm = conn.prepareStatement(sql);
+	        pstm.setInt(1, authorId);
+	        int rowsAffected = pstm.executeUpdate();
+
+	        System.out.println(rowsAffected + " comentários deletados!");
+
+	    } catch (SQLException e) {
+	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+	        throw e;
+	    } catch (ClassNotFoundException e) {
+	        System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+	        throw e;
+	    } finally {
+	        try {
+	            if (pstm != null) {
+	                pstm.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+	        }
+	    }
 	}
 }
