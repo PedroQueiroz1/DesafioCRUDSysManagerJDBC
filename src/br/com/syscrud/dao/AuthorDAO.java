@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
-import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Author;
 import br.com.syscrud.model.Review;
@@ -47,11 +46,12 @@ public class AuthorDAO {
 		}
 	}
 
-	public void findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public void findAll() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author`";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 		ResultSet rset = null;
+		int count = 0;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
@@ -59,10 +59,9 @@ public class AuthorDAO {
 			rset = pstm.executeQuery();
 
 			ReviewDAO reviewDAO = new ReviewDAO();
-
-			boolean found = false;
+			
 			while (rset.next()) {
-				found = true;
+				count++;
 				Author author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
@@ -72,9 +71,10 @@ public class AuthorDAO {
 
 				author.printDetails();
 			}
-			if (!found) {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
+	        if (count == 0) {
+	            System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+	        }
+			
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -98,7 +98,7 @@ public class AuthorDAO {
 		}
 	}
 
-	public Author findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
+	public Author findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author` WHERE `id` = ?";
 		Author author = null;
 		Connection conn = null;
@@ -116,7 +116,7 @@ public class AuthorDAO {
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
@@ -142,7 +142,7 @@ public class AuthorDAO {
 		return author;
 	}
 
-	public Author findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public Author findByName(String name) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author` WHERE `name` = ?";
 		Author author = null;
 		Connection conn = null;
@@ -160,7 +160,7 @@ public class AuthorDAO {
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -243,7 +243,7 @@ public class AuthorDAO {
 			if (rowsAffected > 0) {
 				System.out.println("Autor deletado!");
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());

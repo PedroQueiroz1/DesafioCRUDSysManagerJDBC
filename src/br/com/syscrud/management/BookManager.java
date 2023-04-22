@@ -76,8 +76,5 @@ public class BookManager {
 	    bookDAO.update(book);
 	}
 	
-	public static void bookDelete(Scanner myTeclado, BookDAO bookDAO) throws SQLException, Exception {
-	    System.out.println("\nDigite o ID do livro a ser deletado.");
-	    bookDAO.deleteById(myTeclado.nextInt());
-	}
+
 }

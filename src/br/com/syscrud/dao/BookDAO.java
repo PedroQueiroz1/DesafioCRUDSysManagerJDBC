@@ -259,7 +259,7 @@ public class BookDAO {
 		}
 	}
 
-	public void deleteById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public void deleteById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `book` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -274,7 +274,7 @@ public class BookDAO {
 			if (rowsAffected > 0) {
 				System.out.println("Livro deletado!");
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 			
 		} catch (SQLException e) {
@@ -296,4 +296,37 @@ public class BookDAO {
 			}
 		}
 	}
+
+	/*public void deleteByProductId(int productId) throws SQLException, ClassNotFoundException {
+		String sql = "DELETE FROM `book` WHERE `product_id` = ?";
+		Connection conn = null;
+		JdbcPreparedStatement pstm = null;
+
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm.setInt(1, productId);
+
+			int rowsAffected = pstm.executeUpdate();
+
+			System.out.println(rowsAffected + " livros deletados!");
+
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} finally {
+			try {
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+			}
+		}
+	}
+	*/
+
 }
