@@ -1,5 +1,6 @@
 package br.com.syscrud.model;
 
+//Livros
 public class Book extends Product{
 	
 	private String genre;

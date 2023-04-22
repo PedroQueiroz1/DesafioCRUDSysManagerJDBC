@@ -70,6 +70,7 @@ public class BookDAO {
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 		ResultSet rset = null;
+		int count = 0;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
@@ -77,6 +78,7 @@ public class BookDAO {
 			rset = pstm.executeQuery();
 
 			while (rset.next()) {
+				count++;
 				Book book = new Book();
 				book.setId(rset.getInt("id"));
 				book.setName(rset.getString("name"));
@@ -86,6 +88,9 @@ public class BookDAO {
 
 				books.add(book);
 			}
+	        if (count == 0) {
+	            System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+	        }
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -179,8 +184,6 @@ public class BookDAO {
 				book.setName(rset.getString("name"));
 				book.setPrice(rset.getDouble("price"));
 				book.setQuantity(rset.getInt("quantity"));
-			} else {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -318,8 +321,11 @@ public class BookDAO {
 
 	        int rowsAffected = pstm.executeUpdate();
 
-	        System.out.println(rowsAffected + " livros deletados!");
-
+	        if (rowsAffected > 0) {
+				System.out.println("Livro deletado!");
+			} else {
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
 	    } catch (SQLException e) {
 	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 	        throw e;

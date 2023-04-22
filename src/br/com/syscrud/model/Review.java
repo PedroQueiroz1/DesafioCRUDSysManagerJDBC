@@ -1,5 +1,8 @@
 package br.com.syscrud.model;
 
+//São os comentários.
+//Comentários são feitos tanto em filmes quanto em livros.
+//Os comentários são feitos pelos autores
 public class Review {
 
 	private int id;

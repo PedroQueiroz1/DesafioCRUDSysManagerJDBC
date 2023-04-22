@@ -70,6 +70,7 @@ public class MovieDAO {
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 		ResultSet rset = null;
+		int count = 0;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
@@ -77,6 +78,7 @@ public class MovieDAO {
 			rset = pstm.executeQuery();
 
 			while (rset.next()) {
+				count++;
 				Movie movie = new Movie();
 				movie.setId(rset.getInt("id"));
 				movie.setName(rset.getString("name"));
@@ -86,6 +88,10 @@ public class MovieDAO {
 
 				movies.add(movie);
 			}
+			if (count == 0) {
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -106,9 +112,6 @@ public class MovieDAO {
 			} catch (SQLException e) {
 				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
-		}
-		if (movies.isEmpty()) {
-			System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 		}
 		return movies;
 	}
@@ -181,8 +184,6 @@ public class MovieDAO {
 				movie.setPrice(rset.getDouble("price"));
 				movie.setQuantity(rset.getInt("quantity"));
 				movie.setDuration(rset.getInt("duration"));
-			} else {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -268,7 +269,7 @@ public class MovieDAO {
 		JdbcPreparedStatement pstm = null;
 		ProductDAO productDAO = new ProductDAO();
 		MovieDAO movieDAO = new MovieDAO();
-		
+
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
@@ -309,33 +310,33 @@ public class MovieDAO {
 	}
 
 	public void deleteMovieByProductId(int productId) throws SQLException, ClassNotFoundException {
-	    String sql = "DELETE FROM `movie` WHERE `id` = ?";
-	    Connection conn = null;
-	    JdbcPreparedStatement pstm = null;
+		String sql = "DELETE FROM `movie` WHERE `id` = ?";
+		Connection conn = null;
+		JdbcPreparedStatement pstm = null;
 
-	    try {
-	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
-	        pstm.setInt(1, productId);
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm.setInt(1, productId);
 
-	        int rowsAffected = pstm.executeUpdate();
+			int rowsAffected = pstm.executeUpdate();
 
-	        System.out.println(rowsAffected + " filmes deletados!");
+			System.out.println(rowsAffected + " filmes deletados!");
 
-	    } catch (SQLException e) {
-	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
-	        throw e;
-	    } finally {
-	        try {
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (SQLException e) {
-	            System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
-	        }
-	    }
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} finally {
+			try {
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+			}
+		}
 	}
 }

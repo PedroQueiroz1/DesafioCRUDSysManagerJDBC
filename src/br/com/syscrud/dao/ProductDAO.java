@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
-import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Product;
 import br.com.syscrud.model.Review;
@@ -35,32 +34,32 @@ public class ProductDAO {
 				product.setPrice(rset.getDouble("price"));
 				product.setQuantity(rset.getInt("quantity"));
 			} else {
-	            throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
-	        }
-	    } catch (SQLException e) {
-	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
-	        throw e;
-	    } catch (ClassNotFoundException e) {
-	        System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
-	        throw e;
-	    } finally {
-	        try {
-	            if (rset != null) {
-	                rset.close();
-	            }
-	            if (pstm != null) {
-	                pstm.close();
-	            }
-	            if (conn != null) {
-	                conn.close();
-	            }
-	        } catch (SQLException e) {
-	            System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
-	        }
-	    }
-	    return product;
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
+		} finally {
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+			}
+		}
+		return product;
 	}
-	
+
 	public Product findByName(String name) throws ClassNotFoundException, SQLException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Product product = null;
@@ -80,8 +79,6 @@ public class ProductDAO {
 				product.setName(rset.getString("name"));
 				product.setPrice(rset.getDouble("price"));
 				product.setQuantity(rset.getInt("quantity"));
-			} else {
-				throw new ResourceNotFoundException("Produto não encontrado");
 			}
 
 		} catch (SQLException e) {
@@ -120,7 +117,7 @@ public class ProductDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
 			int count = 0;
-			
+
 			ReviewDAO reviewDAO = new ReviewDAO();
 
 			while (rset.next()) {
@@ -133,12 +130,12 @@ public class ProductDAO {
 
 				List<Review> reviews = reviewDAO.findByProductId(product.getId());
 				product.setReviews(reviews);
-				
+
 				product.printDetails();
 			}
-	        if (count == 0) {
-	            System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
-	        }
+			if (count == 0) {
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -167,12 +164,11 @@ public class ProductDAO {
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 
-	    BookDAO bookDAO = new BookDAO();
-	    bookDAO.deleteBookByProductId(id);
-	    
+		BookDAO bookDAO = new BookDAO();
+		bookDAO.deleteBookByProductId(id);
+
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-
 
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
@@ -203,18 +199,17 @@ public class ProductDAO {
 			}
 		}
 	}
-	
+
 	public void deleteMovieById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `product` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 
-	    MovieDAO movieDAO = new MovieDAO();
-	    movieDAO.deleteMovieByProductId(id);
-	    
+		MovieDAO movieDAO = new MovieDAO();
+		movieDAO.deleteMovieByProductId(id);
+
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-
 
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);

@@ -2,6 +2,8 @@ package br.com.syscrud.model;
 
 import java.util.List;
 
+//'Author' está no sentido de autor do comentário.
+//Preferi 'Author' pois 'reviewer' ia me confundir...
 public class Author implements Printable{
 	
 	private int id;

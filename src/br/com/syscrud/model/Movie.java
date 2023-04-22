@@ -1,5 +1,6 @@
 package br.com.syscrud.model;
 
+//Filmes
 public class Movie extends Product{
 
 	private int duration;

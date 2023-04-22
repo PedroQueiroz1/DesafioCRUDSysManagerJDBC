@@ -59,7 +59,7 @@ public class AuthorDAO {
 			rset = pstm.executeQuery();
 
 			ReviewDAO reviewDAO = new ReviewDAO();
-			
+
 			while (rset.next()) {
 				count++;
 				Author author = new Author();
@@ -71,10 +71,10 @@ public class AuthorDAO {
 
 				author.printDetails();
 			}
-	        if (count == 0) {
-	            System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
-	        }
-			
+			if (count == 0) {
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -159,8 +159,6 @@ public class AuthorDAO {
 				author = new Author();
 				author.setId(rset.getInt("id"));
 				author.setName(rset.getString("name"));
-			} else {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -237,8 +235,6 @@ public class AuthorDAO {
 			pstm.setInt(1, id);
 
 			int rowsAffected = pstm.executeUpdate();
-
-			System.out.println(rowsAffected + " comentários deletados!");
 
 			if (rowsAffected > 0) {
 				System.out.println("Autor deletado!");
