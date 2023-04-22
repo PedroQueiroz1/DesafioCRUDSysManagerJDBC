@@ -167,6 +167,9 @@ public class ProductDAO {
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 
+	    BookDAO bookDAO = new BookDAO();
+	    bookDAO.deleteByProductId(id);
+	    
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 

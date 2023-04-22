@@ -263,14 +263,23 @@ public class BookDAO {
 		String sql = "DELETE FROM `book` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
-
+		ProductDAO productDAO = new ProductDAO();
+		BookDAO bookDAO = new BookDAO();
+		
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
-
+			
 			int rowsAffected = pstm.executeUpdate();
-
+			
+			bookDAO.deleteByProductId(id);
+			try {
+				productDAO.deleteById(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			if (rowsAffected > 0) {
 				System.out.println("Livro deletado!");
 			} else {
@@ -297,36 +306,34 @@ public class BookDAO {
 		}
 	}
 
-	/*public void deleteByProductId(int productId) throws SQLException, ClassNotFoundException {
-		String sql = "DELETE FROM `book` WHERE `product_id` = ?";
-		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+	public void deleteByProductId(int productId) throws SQLException, ClassNotFoundException {
+	    String sql = "DELETE FROM `book` WHERE `id` = ?";
+	    Connection conn = null;
+	    JdbcPreparedStatement pstm = null;
 
-		try {
-			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
-			pstm.setInt(1, productId);
+	    try {
+	        conn = ConnectionFactory.createConnectionToMySQL();
+	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+	        pstm.setInt(1, productId);
 
-			int rowsAffected = pstm.executeUpdate();
+	        int rowsAffected = pstm.executeUpdate();
 
-			System.out.println(rowsAffected + " livros deletados!");
+	        System.out.println(rowsAffected + " livros deletados!");
 
-		} catch (SQLException e) {
-			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
-			throw e;
-		} finally {
-			try {
-				if (pstm != null) {
-					pstm.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
-			}
-		}
+	    } catch (SQLException e) {
+	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+	        throw e;
+	    } finally {
+	        try {
+	            if (pstm != null) {
+	                pstm.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+	        }
+	    }
 	}
-	*/
-
 }

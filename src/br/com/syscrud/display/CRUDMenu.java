@@ -13,7 +13,7 @@ public class CRUDMenu {
 	
 	public static int displayCRUDMenuProduct(Scanner myTeclado) {
 	    System.out.println("\nO que você gostaria de fazer? Digite o número correspondente:\n"
-	    		+ "1. Mostrar todos que já foram criados e deletados\n2. Voltar");
+	    		+ "1. Mostrar todos os produtos\n2. Voltar");
 	    int crudResponse = myTeclado.nextInt();
 	    return crudResponse;
 	}
