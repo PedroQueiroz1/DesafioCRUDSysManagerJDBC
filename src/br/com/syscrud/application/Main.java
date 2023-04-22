@@ -230,7 +230,7 @@ public class Main {
 					}
 				} else if (sectorResponse == 3) {
 					/*
-					 * - - - - - - - - - REVIEW - - - - - - - - -
+					 * - - - - - - - - - Comentários - - - - - - - - -
 					 */
 					ReviewDAO reviewDAO = new ReviewDAO();
 					AuthorDAO authorDAO = new AuthorDAO();
