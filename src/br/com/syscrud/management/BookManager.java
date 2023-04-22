@@ -50,10 +50,6 @@ public class BookManager {
 	    myTeclado.nextLine();
 
 	    Book book = bookDAO.findById(bookId);
-	    if (book == null) {
-	        System.out.println("Livro não encontrado.");
-	        return;
-	    }
 
 	    System.out.println("\nDigite o novo nome do livro. Nome atual: " + book.getName());
 	    String newName = myTeclado.nextLine();

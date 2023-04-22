@@ -113,7 +113,7 @@ public class MovieDAO {
 		return movies;
 	}
 
-	public Movie findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
+	public Movie findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT p.*, m.duration FROM `product` p JOIN `movie` m ON p.id = m.id WHERE p.`id` = ?";
 		Movie movie = null;
 		Connection conn = null;
@@ -134,7 +134,7 @@ public class MovieDAO {
 				movie.setQuantity(rset.getInt("quantity"));
 				movie.setDuration(rset.getInt("duration"));
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -161,7 +161,7 @@ public class MovieDAO {
 		return movie;
 	}
 
-	public Movie findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public Movie findByName(String name) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Movie movie = null;
 		Connection conn = null;
@@ -182,7 +182,7 @@ public class MovieDAO {
 				movie.setQuantity(rset.getInt("quantity"));
 				movie.setDuration(rset.getInt("duration"));
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -209,7 +209,7 @@ public class MovieDAO {
 		return movie;
 	}
 
-	public void update(Movie movie) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public void update(Movie movie) throws SQLException, ClassNotFoundException {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
 		String sqlMovie = "UPDATE `movie` SET `duration` = ? WHERE `id` = ?";
 		Connection conn = null;
@@ -235,7 +235,7 @@ public class MovieDAO {
 			conn.commit();
 
 			if (rowsAffectedProduct == 0 && rowsAffectedMovie == 0) {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 			System.out.println("Filme atualizado! -> ID do filme: " + movie.getId());
@@ -262,7 +262,7 @@ public class MovieDAO {
 		}
 	}
 
-	public void deleteById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public void deleteById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
@@ -277,7 +277,7 @@ public class MovieDAO {
 			if (rowsAffected > 0) {
 				System.out.println("Filme deletado! -> ID do filme: " + id);
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {

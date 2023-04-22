@@ -113,7 +113,7 @@ public class BookDAO {
 		return books;
 	}
 
-	public Book findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
+	public Book findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT p.*, b.genre FROM `product` p JOIN `book` b ON p.id = b.id WHERE p.`id` = ?";
 		Book book = null;
 		Connection conn = null;
@@ -134,7 +134,7 @@ public class BookDAO {
 				book.setQuantity(rset.getInt("quantity"));
 				book.setGenre(rset.getString("genre"));
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
@@ -160,7 +160,7 @@ public class BookDAO {
 		return book;
 	}
 
-	public Book findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
+	public Book findByName(String name) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Book book = null;
 		Connection conn = null;
@@ -180,7 +180,7 @@ public class BookDAO {
 				book.setPrice(rset.getDouble("price"));
 				book.setQuantity(rset.getInt("quantity"));
 			} else {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 		} catch (SQLException e) {
@@ -234,7 +234,7 @@ public class BookDAO {
 			conn.commit();
 			
 			if (rowsAffectedProduct == 0 && rowsAffectedBook == 0) {
-				throw new ResourceNotFoundException(Constants.ERROR_MESSAGE_NOT_FOUND);
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
 
 			System.out.println("Livro atualizado! -> ID do livro: " + book.getId());

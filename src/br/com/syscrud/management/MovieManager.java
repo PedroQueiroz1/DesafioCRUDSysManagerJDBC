@@ -49,10 +49,6 @@ public class MovieManager {
 		myTeclado.nextLine();
 		
 	    Movie movie = movieDAO.findById(movieId);
-	    if (movie == null) {
-	        System.out.println("Filme não encontrado.");
-	        return;
-	    }
 
 	    System.out.println("\nDigite o novo nome do filme. Nome atual: " + movie.getName());
 	    String newName = myTeclado.nextLine();
