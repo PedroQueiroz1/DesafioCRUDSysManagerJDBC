@@ -144,6 +144,7 @@ public class BookDAO {
 			} else {
 				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
+			
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -290,7 +291,7 @@ public class BookDAO {
 			}
 			
 			if (rowsAffected > 0) {
-				System.out.println("Livro deletado! -> ID do livro: " + id);
+				System.out.println("Livro deletado!");
 			} else {
 				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
@@ -326,13 +327,7 @@ public class BookDAO {
 	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 	        pstm.setInt(1, productId);
 
-	        int rowsAffected = pstm.executeUpdate();
-	        
-			if (rowsAffected > 0) {
-				System.out.println("Livro deletado!");
-			} else {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
+	        pstm.executeUpdate();
 
 	    } catch (SQLException e) {
 	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
