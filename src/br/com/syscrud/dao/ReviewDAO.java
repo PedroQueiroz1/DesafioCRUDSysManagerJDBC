@@ -61,7 +61,6 @@ public class ReviewDAO {
 		Connection conn = null;
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		int count = 0;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
@@ -69,7 +68,6 @@ public class ReviewDAO {
 			rset = pstm.executeQuery();
 
 			while (rset.next()) {
-				count++;
 
 				Review review = new Review();
 				review.setId(rset.getInt("id"));
@@ -88,9 +86,7 @@ public class ReviewDAO {
 
 				reviews.add(review);
 			}
-			if (count == 0) {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
+			
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
