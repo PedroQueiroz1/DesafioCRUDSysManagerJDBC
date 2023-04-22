@@ -14,6 +14,7 @@ import br.com.syscrud.util.Constants;
 
 public class AuthorDAO {
 
+	// CREATE
 	public void save(Author author) throws SQLException, Exception {
 
 		String sql = "INSERT INTO `author` (`name`) VALUES (?)";
@@ -46,6 +47,7 @@ public class AuthorDAO {
 		}
 	}
 
+	// READ
 	public void findAll() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author`";
 		Connection conn = null;
@@ -98,6 +100,7 @@ public class AuthorDAO {
 		}
 	}
 
+	// READ
 	public Author findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author` WHERE `id` = ?";
 		Author author = null;
@@ -142,6 +145,7 @@ public class AuthorDAO {
 		return author;
 	}
 
+	// READ
 	public Author findByName(String name) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author` WHERE `name` = ?";
 		Author author = null;
@@ -185,6 +189,7 @@ public class AuthorDAO {
 		return author;
 	}
 
+	// UPDATE
 	public void update(Author author) throws SQLException, Exception {
 		String sql = "UPDATE `author` SET `name` = ? WHERE `id` = ?";
 		Connection conn = null;
@@ -220,6 +225,7 @@ public class AuthorDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `author` WHERE `id` = ?";
 		Connection conn = null;

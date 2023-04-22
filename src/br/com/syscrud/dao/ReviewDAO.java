@@ -18,6 +18,7 @@ import br.com.syscrud.util.Constants;
 
 public class ReviewDAO {
 
+	// CREATE
 	public void save(Review review) throws SQLException, Exception {
 
 		String sql = "INSERT INTO `review` (`stars`, `comment`, `reviewer_id`, `product_id`) VALUES (?, ?, ?, ?)";
@@ -53,6 +54,7 @@ public class ReviewDAO {
 		}
 	}
 
+	// READ
 	public List<Review> findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM review";
 		List<Review> reviews = new ArrayList<Review>();
@@ -116,6 +118,7 @@ public class ReviewDAO {
 		return reviews;
 	}
 
+	// READ
 	public Review findById(int id) throws SQLException, ResourceNotFoundException, ClassNotFoundException {
 		String sql = "SELECT * FROM `review` WHERE `id` = ?";
 		Review review = null;
@@ -168,6 +171,7 @@ public class ReviewDAO {
 		return review;
 	}
 
+	// READ
 	public Review findByName(String name) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `review` WHERE `product_id` " + "= (SELECT `id` FROM `product` WHERE `name` = ?)";
 		Review review = null;
@@ -218,6 +222,7 @@ public class ReviewDAO {
 		return review;
 	}
 
+	// READ
 	public List<Review> findByAuthorId(int authorId)
 			throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `review` WHERE `reviewer_id` = ?";
@@ -270,6 +275,7 @@ public class ReviewDAO {
 		return reviews;
 	}
 
+	// READ
 	public List<Review> findByProductId(int productId)
 			throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT * FROM `review` WHERE `product_id` = ?";
@@ -322,6 +328,7 @@ public class ReviewDAO {
 		return reviews;
 	}
 
+	// UPDATE
 	public void update(Review review) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "UPDATE `review` SET `stars` = ?, `comment` = ?, "
 				+ "`reviewer_id` = ?, `product_id` = ? WHERE `id` = ?";
@@ -365,6 +372,7 @@ public class ReviewDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "DELETE FROM `review` WHERE `id` = ?";
 		Connection conn = null;
@@ -403,6 +411,7 @@ public class ReviewDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteByAuthorId(int authorId) throws SQLException, Exception {
 		String sql = "DELETE FROM `review` WHERE `reviewer_id` = ?";
 		Connection conn = null;

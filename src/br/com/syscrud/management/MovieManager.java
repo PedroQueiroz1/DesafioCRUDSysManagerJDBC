@@ -43,35 +43,36 @@ public class MovieManager {
 	}
 
 	public static void movieUpdate(Scanner myTeclado, MovieDAO movieDAO) throws SQLException, Exception {
-		
+
 		System.out.println("\nDigite o ID do filme a ser alterado:");
 		int movieId = myTeclado.nextInt();
 		myTeclado.nextLine();
-		
-	    Movie movie = movieDAO.findById(movieId);
 
-	    System.out.println("\nDigite o novo nome do filme. Nome atual: " + movie.getName());
-	    String newName = myTeclado.nextLine();
-	    movie.setName(newName);
+		Movie movie = movieDAO.findById(movieId);
 
-	    System.out.println("\nDigite o novo preço do " + movie.getName() + ". Preço atual: R$" + movie.getPrice());
+		System.out.println("\nDigite o novo nome do filme. Nome atual: " + movie.getName());
+		String newName = myTeclado.nextLine();
+		movie.setName(newName);
+
+		System.out.println("\nDigite o novo preço do " + movie.getName() + ". Preço atual: R$" + movie.getPrice());
 		String newPrice = myTeclado.nextLine();
 		double newPriceDouble = DoubleConverter.parseDouble(newPrice);
 		movie.setPrice(newPriceDouble);
 
-	    System.out.println("\nDigite a nova quantidade do " + movie.getName() + ". Quantidade atual: " + movie.getQuantity());
-	    int newQuantity = myTeclado.nextInt();
-	    movie.setQuantity(newQuantity);
+		System.out.println(
+				"\nDigite a nova quantidade do " + movie.getName() + ". Quantidade atual: " + movie.getQuantity());
+		int newQuantity = myTeclado.nextInt();
+		movie.setQuantity(newQuantity);
 
-	    System.out.println("\nDigite a nova duração do " + movie.getName() + ". Duração atual: " + movie.getDuration());
-	    int newDuration = myTeclado.nextInt();
-	    movie.setDuration(newDuration);
-	    
+		System.out.println("\nDigite a nova duração do " + movie.getName() + ". Duração atual: " + movie.getDuration());
+		int newDuration = myTeclado.nextInt();
+		movie.setDuration(newDuration);
+
 		movieDAO.update(movie);
 	}
 
-	  public static void movieDelete(Scanner myTeclado, MovieDAO movieDAO) throws SQLException, Exception {
-	        System.out.println("\nDigite o ID do filme a ser deletado.");
-	        movieDAO.deleteById(myTeclado.nextInt());
-	    }
+	public static void movieDelete(Scanner myTeclado, MovieDAO movieDAO) throws SQLException, Exception {
+		System.out.println("\nDigite o ID do filme a ser deletado.");
+		movieDAO.deleteById(myTeclado.nextInt());
+	}
 }

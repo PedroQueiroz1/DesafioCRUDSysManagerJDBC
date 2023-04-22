@@ -14,6 +14,7 @@ import br.com.syscrud.util.Constants;
 
 public class ProductDAO {
 
+	// READ
 	public Product findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `id` = ?";
 		Product product = null;
@@ -60,6 +61,7 @@ public class ProductDAO {
 		return product;
 	}
 
+	// READ
 	public Product findByName(String name) throws ClassNotFoundException, SQLException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Product product = null;
@@ -106,6 +108,7 @@ public class ProductDAO {
 		return product;
 	}
 
+	// READ
 	public void findAll() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product`";
 		Connection conn = null;
@@ -159,6 +162,7 @@ public class ProductDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteBookById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `product` WHERE `id` = ?";
 		Connection conn = null;
@@ -173,13 +177,8 @@ public class ProductDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
-			int rowsAffected = pstm.executeUpdate();
+			pstm.executeUpdate();
 
-			if (rowsAffected > 0) {
-				System.out.println("Produto deletado!");
-			} else {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;
@@ -214,13 +213,8 @@ public class ProductDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
-			int rowsAffected = pstm.executeUpdate();
+			pstm.executeUpdate();
 
-			if (rowsAffected > 0) {
-				System.out.println("Produto deletado!");
-			} else {
-				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
-			}
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 			throw e;

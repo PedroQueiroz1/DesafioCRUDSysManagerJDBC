@@ -16,6 +16,7 @@ import br.com.syscrud.util.Constants;
 
 public class BookDAO {
 
+	// CREATE
 	public void save(Book book) throws SQLException, Exception {
 		String sqlProduct = "INSERT INTO product (name, price, quantity) VALUES (?, ?, ?)";
 		String sqlBook = "INSERT INTO book (id, genre) VALUES (?, ?)";
@@ -62,7 +63,8 @@ public class BookDAO {
 			}
 		}
 	}
-
+	
+	// READ
 	public List<Book> findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT b.id, b.genre, p.name, p.price, p.quantity " + "FROM book b "
 				+ "INNER JOIN product p ON b.id = p.id";
@@ -118,6 +120,7 @@ public class BookDAO {
 		return books;
 	}
 
+	// READ
 	public Book findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT p.*, b.genre FROM `product` p JOIN `book` b ON p.id = b.id WHERE p.`id` = ?";
 		Book book = null;
@@ -165,6 +168,7 @@ public class BookDAO {
 		return book;
 	}
 
+	// READ
 	public Book findByName(String name) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Book book = null;
@@ -210,6 +214,7 @@ public class BookDAO {
 		return book;
 	}
 
+	// UPDATE
 	public void update(Book book) throws SQLException, Exception {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
 		String sqlBook = "Update `book` SET `genre` = ? WHERE `id` = ?";
@@ -262,6 +267,7 @@ public class BookDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `book` WHERE `id` = ?";
 		Connection conn = null;
@@ -284,7 +290,7 @@ public class BookDAO {
 			}
 			
 			if (rowsAffected > 0) {
-				System.out.println("Livro deletado!");
+				System.out.println("Livro deletado! -> ID do livro: " + id);
 			} else {
 				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
@@ -309,6 +315,7 @@ public class BookDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteBookByProductId(int productId) throws SQLException, ClassNotFoundException {
 	    String sql = "DELETE FROM `book` WHERE `id` = ?";
 	    Connection conn = null;
@@ -320,12 +327,13 @@ public class BookDAO {
 	        pstm.setInt(1, productId);
 
 	        int rowsAffected = pstm.executeUpdate();
-
-	        if (rowsAffected > 0) {
+	        
+			if (rowsAffected > 0) {
 				System.out.println("Livro deletado!");
 			} else {
 				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
+
 	    } catch (SQLException e) {
 	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
 	        throw e;

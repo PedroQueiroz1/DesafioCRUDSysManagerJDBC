@@ -16,6 +16,7 @@ import br.com.syscrud.util.Constants;
 
 public class MovieDAO {
 
+	// CREATE
 	public void save(Movie movie) throws SQLException, Exception {
 		String sqlProduct = "INSERT INTO product (name, price, quantity) VALUES (?, ?, ?)";
 		String sqlMovie = "INSERT INTO movie (id, duration) VALUES (?, ?)";
@@ -63,6 +64,7 @@ public class MovieDAO {
 		}
 	}
 
+	// READ
 	public List<Movie> findAll() throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "SELECT m.id, m.duration, p.name, p.price, p.quantity " + "FROM movie m "
 				+ "INNER JOIN product p ON m.id = p.id";
@@ -116,6 +118,7 @@ public class MovieDAO {
 		return movies;
 	}
 
+	// READ
 	public Movie findById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT p.*, m.duration FROM `product` p JOIN `movie` m ON p.id = m.id WHERE p.`id` = ?";
 		Movie movie = null;
@@ -164,6 +167,7 @@ public class MovieDAO {
 		return movie;
 	}
 
+	// READ
 	public Movie findByName(String name) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Movie movie = null;
@@ -210,6 +214,7 @@ public class MovieDAO {
 		return movie;
 	}
 
+	// UPDATE
 	public void update(Movie movie) throws SQLException, ClassNotFoundException {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
 		String sqlMovie = "UPDATE `movie` SET `duration` = ? WHERE `id` = ?";
@@ -263,6 +268,7 @@ public class MovieDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
@@ -279,12 +285,13 @@ public class MovieDAO {
 
 			movieDAO.deleteMovieByProductId(id);
 			try {
-				productDAO.deleteBookById(id);
+				productDAO.deleteMovieById(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 			if (rowsAffected > 0) {
-				System.out.println("Filme deletado! -> ID do filme: " + id);
+				System.out.println("Filme deletado!");
 			} else {
 				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
 			}
@@ -309,6 +316,7 @@ public class MovieDAO {
 		}
 	}
 
+	// DELETE
 	public void deleteMovieByProductId(int productId) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
@@ -319,9 +327,7 @@ public class MovieDAO {
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
 			pstm.setInt(1, productId);
 
-			int rowsAffected = pstm.executeUpdate();
-
-			System.out.println(rowsAffected + " filmes deletados!");
+			pstm.executeUpdate();
 
 		} catch (SQLException e) {
 			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());

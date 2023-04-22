@@ -88,7 +88,6 @@ public class Main {
 							 * - - - LIVRO - - -
 							 */
 							BookDAO bookDAO = new BookDAO();
-							ProductDAO productDAO = new ProductDAO();
 
 							boolean back = false;
 							while (!back) {
@@ -103,7 +102,7 @@ public class Main {
 								} else if (crudResponse == 3) {
 									BookManager.bookUpdate(myTeclado, bookDAO);
 								} else if (crudResponse == 4) {
-									ProductManager.bookDelete(myTeclado, productDAO);
+									BookManager.bookDelete(myTeclado, bookDAO);
 								} else if (crudResponse == 5) {
 									System.out.println();
 									back = true;
