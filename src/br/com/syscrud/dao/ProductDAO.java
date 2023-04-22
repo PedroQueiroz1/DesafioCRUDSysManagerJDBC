@@ -162,13 +162,55 @@ public class ProductDAO {
 		}
 	}
 
-	public void deleteById(int id) throws SQLException, Exception {
+	public void deleteBookById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `product` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
 
 	    BookDAO bookDAO = new BookDAO();
-	    bookDAO.deleteByProductId(id);
+	    bookDAO.deleteBookByProductId(id);
+	    
+		try {
+			conn = ConnectionFactory.createConnectionToMySQL();
+
+
+			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm.setInt(1, id);
+
+			int rowsAffected = pstm.executeUpdate();
+
+			if (rowsAffected > 0) {
+				System.out.println("Produto deletado!");
+			} else {
+				System.out.println(Constants.ERROR_MESSAGE_NOT_FOUND);
+			}
+		} catch (SQLException e) {
+			System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+			throw e;
+		} catch (ClassNotFoundException e) {
+			System.err.println(Constants.ERROR_MESSAGE_LOAD_DRIVER_CLASS + e.getMessage());
+			throw e;
+		} finally {
+			try {
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+			}
+		}
+	}
+	
+	public void deleteMovieById(int id) throws SQLException, Exception {
+		String sql = "DELETE FROM `product` WHERE `id` = ?";
+		Connection conn = null;
+		JdbcPreparedStatement pstm = null;
+
+	    MovieDAO movieDAO = new MovieDAO();
+	    movieDAO.deleteMovieByProductId(id);
 	    
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();

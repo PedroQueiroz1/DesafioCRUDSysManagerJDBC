@@ -273,9 +273,9 @@ public class BookDAO {
 			
 			int rowsAffected = pstm.executeUpdate();
 			
-			bookDAO.deleteByProductId(id);
+			bookDAO.deleteBookByProductId(id);
 			try {
-				productDAO.deleteById(id);
+				productDAO.deleteBookById(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -306,7 +306,7 @@ public class BookDAO {
 		}
 	}
 
-	public void deleteByProductId(int productId) throws SQLException, ClassNotFoundException {
+	public void deleteBookByProductId(int productId) throws SQLException, ClassNotFoundException {
 	    String sql = "DELETE FROM `book` WHERE `id` = ?";
 	    Connection conn = null;
 	    JdbcPreparedStatement pstm = null;

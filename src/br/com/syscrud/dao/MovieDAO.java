@@ -266,7 +266,9 @@ public class MovieDAO {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
 		JdbcPreparedStatement pstm = null;
-
+		ProductDAO productDAO = new ProductDAO();
+		MovieDAO movieDAO = new MovieDAO();
+		
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
@@ -274,6 +276,12 @@ public class MovieDAO {
 
 			int rowsAffected = pstm.executeUpdate();
 
+			movieDAO.deleteMovieByProductId(id);
+			try {
+				productDAO.deleteBookById(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (rowsAffected > 0) {
 				System.out.println("Filme deletado! -> ID do filme: " + id);
 			} else {
@@ -298,5 +306,36 @@ public class MovieDAO {
 				System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
 			}
 		}
+	}
+
+	public void deleteMovieByProductId(int productId) throws SQLException, ClassNotFoundException {
+	    String sql = "DELETE FROM `movie` WHERE `id` = ?";
+	    Connection conn = null;
+	    JdbcPreparedStatement pstm = null;
+
+	    try {
+	        conn = ConnectionFactory.createConnectionToMySQL();
+	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+	        pstm.setInt(1, productId);
+
+	        int rowsAffected = pstm.executeUpdate();
+
+	        System.out.println(rowsAffected + " filmes deletados!");
+
+	    } catch (SQLException e) {
+	        System.err.println(Constants.ERROR_MESSAGE_DB_OPERATION + e.getMessage());
+	        throw e;
+	    } finally {
+	        try {
+	            if (pstm != null) {
+	                pstm.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            System.err.println(Constants.ERROR_MESSAGE_CLOSE_CONNECTION + e.getMessage());
+	        }
+	    }
 	}
 }

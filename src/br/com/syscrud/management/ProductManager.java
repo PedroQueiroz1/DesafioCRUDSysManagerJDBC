@@ -15,6 +15,11 @@ public class ProductManager {
 	
 	public static void bookDelete(Scanner myTeclado, ProductDAO productDAO) throws SQLException, Exception {
 	    System.out.println("\nDigite o ID do livro a ser deletado.");
-	    productDAO.deleteById(myTeclado.nextInt());
+	    productDAO.deleteBookById(myTeclado.nextInt());
+	}
+	
+	public static void movieDelete(Scanner myTeclado, ProductDAO productDAO) throws SQLException, Exception {
+	    System.out.println("\nDigite o ID do filme a ser deletado.");
+	    productDAO.deleteMovieById(myTeclado.nextInt());
 	}
 }
