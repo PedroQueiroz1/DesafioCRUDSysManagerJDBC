@@ -7,4 +7,4 @@ O projeto está funcionando totalmente! Com o total de 2 bugs ainda não resolvi
 
 <br><br>~~Projeto desenvolvido pensando em ser executado somente pelo console, no eclipse.~~
 
-<br><br>O projeto está considerado pronto. Agora vou implementar frontend no projeto utilizando JSF.
+<br><br>O projeto está considerado pronto. Agora vou implementar frontend no projeto utilizando JSF e Primefaces.
