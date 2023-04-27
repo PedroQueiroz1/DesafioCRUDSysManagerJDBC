@@ -44,7 +44,7 @@
 				<p:commandButton rendered="#{authorView.author.id == 0}"
 					value="Criar" action="#{authorView.create}" update="form" />
 				<p:commandButton rendered="#{authorView.author.id != 0}"
-					value="Clear Form" action="#{authorView.clearForm}" update="form" />
+					value="Voltar" action="#{authorView.clearForm}" update="form" />
 			</h:form>
 		</p:panelGrid>
 	</h:form>
@@ -65,6 +65,21 @@
 						action="#{bookView.updateForm(boo)}" update="form2" />
 				</p:column>
 
+				<p:column headerText="Preço">
+					<p:commandLink value="#{boo.price} reais"
+						action="#{bookView.updateForm(boo)}" update="form2" />
+				</p:column>
+
+				<p:column headerText="Quantity">
+					<p:commandLink value="#{boo.quantity} unidades"
+						action="#{bookView.updateForm(boo)}" update="form2" />
+				</p:column>
+
+				<p:column headerText="Gênero">
+					<p:commandLink value="#{boo.genre}"
+						action="#{bookView.updateForm(boo)}" update="form2" />
+				</p:column>
+
 				<p:column headerText="Deletar">
 					<p:commandButton value="Deletar"
 						action="#{bookView.deleteConfirm(boo)}" update="form2" />
@@ -73,14 +88,20 @@
 
 			<h:form id="form-3">
 				<h:inputHidden value="#{bookView.book.id}" />
-				<p:outputLabel value="Nome do livro: " />
+				<p:outputLabel value="Nome: " />
 				<p:inputText value="#{bookView.book.name}" />
+				<p:outputLabel value="Preço: " />
+				<p:inputText value="#{bookView.book.price}" />
+				<p:outputLabel value="Quantidade: " />
+				<p:inputText value="#{bookView.book.quantity}" />
+				<p:outputLabel value="Gênero " />
+				<p:inputText value="#{bookView.book.genre}" />
 				<p:commandButton rendered="#{bookView.book.id != 0}"
 					value="Atualizar" action="#{bookView.update}" update="form2" />
 				<p:commandButton rendered="#{bookView.book.id == 0}" value="Criar"
 					action="#{bookView.create}" update="form2" />
-				<p:commandButton rendered="#{bookView.book.id != 0}"
-					value="Clear Form" action="#{bookView.clearForm}" update="form2" />
+				<p:commandButton rendered="#{bookView.book.id != 0}" value="Voltar"
+					action="#{bookView.clearForm}" update="form2" />
 			</h:form>
 		</p:panelGrid>
 	</h:form>
@@ -101,6 +122,21 @@
 						action="#{movieView.updateForm(mov)}" update="form3" />
 				</p:column>
 
+				<p:column headerText="Preço">
+					<p:commandLink value="#{mov.price} reais"
+						action="#{movieView.updateForm(mov)}" update="form3" />
+				</p:column>
+
+				<p:column headerText="Quantidade">
+					<p:commandLink value="#{mov.quantity} unidades"
+						action="#{movieView.updateForm(mov)}" update="form3" />
+				</p:column>
+
+				<p:column headerText="Duração">
+					<p:commandLink value="#{mov.duration} minutos"
+						action="#{movieView.updateForm(mov)}" update="form3" />
+				</p:column>
+
 				<p:column headerText="Deletar">
 					<p:commandButton value="Deletar"
 						action="#{movieView.deleteConfirm(mov)}" update="form3" />
@@ -111,12 +147,18 @@
 				<h:inputHidden value="#{movieView.movie.id}" />
 				<p:outputLabel value="Nome do filme: " />
 				<p:inputText value="#{movieView.movie.name}" />
+				<p:outputLabel value="Preço: " />
+				<p:inputText value="#{movieView.movie.price}" />
+				<p:outputLabel value="Quantidade: " />
+				<p:inputText value="#{movieView.movie.quantity}" />
+				<p:outputLabel value="Tempo/Duração " />
+				<p:inputText value="#{movieView.movie.duration}" />
 				<p:commandButton rendered="#{movieView.movie.id != 0}"
 					value="Atualizar" action="#{movieView.update}" update="form3" />
 				<p:commandButton rendered="#{movieView.movie.id == 0}" value="Criar"
 					action="#{movieView.create}" update="form3" />
 				<p:commandButton rendered="#{movieView.movie.id != 0}"
-					value="Clear Form" action="#{movieView.clearForm}" update="form3" />
+					value="Voltar" action="#{movieView.clearForm}" update="form3" />
 			</h:form>
 		</p:panelGrid>
 	</h:form>
@@ -138,7 +180,17 @@
 				</p:column>
 
 				<p:column headerText="Estrelas">
-					<p:commandLink value="#{rev.stars}"
+					<p:commandLink value="#{rev.stars} estrelas"
+						action="#{reviewView.updateForm(rev)}" update="form4" />
+				</p:column>
+
+				<p:column headerText="Autor">
+					<p:commandLink value="#{rev.reviewer.name}"
+						action="#{reviewView.updateForm(rev)}" update="form4" />
+				</p:column>
+
+				<p:column headerText="Produto">
+					<p:commandLink value="#{rev.product.name}"
 						action="#{reviewView.updateForm(rev)}" update="form4" />
 				</p:column>
 
@@ -150,14 +202,20 @@
 
 			<h:form id="form-4">
 				<h:inputHidden value="#{reviewView.review.id}" />
+				<p:outputLabel value="Produto: " />
+				<p:inputText value="#{reviewView.review.product}" converter="#{reviewView.productConverter}"/>
 				<p:outputLabel value="Comentário: " />
 				<p:inputText value="#{reviewView.review.comment}" />
+				<p:outputLabel value="Estrelas: " />
+				<p:inputText value="#{reviewView.review.stars}" />
+				<p:outputLabel value="Autor: " />
+				<p:inputText value="#{reviewView.review.reviewer}" converter="#{reviewView.authorConverter}"/>
 				<p:commandButton rendered="#{reviewView.review.id != 0}"
 					value="Atualizar" action="#{reviewView.update}" update="form4" />
 				<p:commandButton rendered="#{reviewView.review.id == 0}"
 					value="Criar" action="#{reviewView.create}" update="form4" />
 				<p:commandButton rendered="#{reviewView.review.id != 0}"
-					value="Clear Form" action="#{reviewView.clearForm}" update="form4" />
+					value="Voltar" action="#{reviewView.clearForm}" update="form4" />
 			</h:form>
 		</p:panelGrid>
 	</h:form>

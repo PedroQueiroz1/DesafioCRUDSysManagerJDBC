@@ -44,14 +44,17 @@ public class AuthorView implements Serializable {
 		return "index";
 	}
 	
+	//Limpa o formulário, volta ao estado de criação de objeto
 	public String clearForm() {
 		this.author = new Author();
 		return "index";
 	}
 	
+	//Ao clicar no botão delete
+	//Redireciona para o arquivo "confirmDeleteAuthor.xhtml"
 	public String deleteConfirm(Author author) {
 		this.author = author;
-		return "confirmDelete";
+		return "confirmDeleteAuthor";
 	}
 	
 	public List<Author> getAuthorList() throws ClassNotFoundException, SQLException{

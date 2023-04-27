@@ -16,11 +16,11 @@
             <p:columnGroup>
                 Tem certeza que deseja excluir esse autor?
                     <pre>
-        <b>ID: </b>#{authorView.author.id}<br/>
-        <b>Nome: </b>#{authorView.author.name}<br/>
+        <b>ID: </b>#{movieView.movie.id}<br/>
+        <b>Nome: </b>#{movieView.movie.name}<br/>
     	</pre>
                 <p:commandButton value="Cancel" action="index"/>
-                <p:commandButton value="Delete" act111ion="#{authorView.delete}"/>
+                <p:commandButton value="Delete" action="#{movieView.delete}"/>
             </p:columnGroup>
         </p:panelGrid>
     </h:form>

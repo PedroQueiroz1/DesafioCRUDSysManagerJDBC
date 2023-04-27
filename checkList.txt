@@ -1,0 +1,16 @@
+JSF:
+
+------------------------AUTOR------------------------
+Autor está criando, listando, atualizando e deletando. CRUD COMPLETO
+
+*Falta implementar a opção de ver todos os comentários feito pelo autor.
+
+------------------------Livro------------------------
+Livro está criando, listando, atualizando e deletando. CRUD COMPLETO
+
+------------------------Filme------------------------
+Filme está criando, listando, atualizando e deletando. CRUD COMPLETO
+
+------------------------Análise------------------------
+Análise está listando.
+Análise não está criando, atualizando e deletando.

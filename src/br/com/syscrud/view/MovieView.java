@@ -44,14 +44,17 @@ public class MovieView implements Serializable {
 		return "index";
 	}
 	
+	//Limpa o formulário, volta ao estado de criação de objeto
 	public String clearForm() {
 		this.movie = new Movie();
 		return "index";
 	}
 	
+	//Ao clicar no botão delete
+	//Redireciona para o arquivo "confirmDeleteMovie.xhtml"
 	public String deleteConfirm(Movie movie) {
 		this.movie = movie;
-		return "confirmDelete";
+		return "confirmDeleteMovie";
 	}
 	
 	public List<Movie> getMovieList() throws ClassNotFoundException, SQLException{

@@ -372,11 +372,11 @@ public class ReviewDAO {
 	public void deleteById(int id) throws SQLException, ClassNotFoundException, ResourceNotFoundException {
 		String sql = "DELETE FROM `review` WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
 			int rowsAffected = pstm.executeUpdate();

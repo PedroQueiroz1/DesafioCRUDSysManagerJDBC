@@ -44,14 +44,17 @@ public class BookView implements Serializable {
 		return "index";
 	}
 	
+	//Limpa o formulário, volta ao estado de criação de objeto
 	public String clearForm() {
 		this.book = new Book();
 		return "index";
 	}
 	
+	//Ao clicar no botão delete
+	//Redireciona para o arquivo "confirmDeleteBook.xhtml"
 	public String deleteConfirm(Book book) {
 		this.book = book;
-		return "confirmDelete";
+		return "confirmDeleteBook";
 	}
 	
 	public List<Book> getBookList() throws ClassNotFoundException, SQLException{
