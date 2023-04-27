@@ -8,12 +8,39 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+
+
 	<title>CineLivraria!</title>
+	<!-- Required meta tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- Bootstrap CSS -->
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+		crossorigin="anonymous" />
+
+	<style type="text/css">
+
+body {
+	text-align: center;
+	margin: 0 8% 0 8%;
+}
+
+.ui-panelgrid .ui-panelgrid-header {
+	background-color: #6597D0;
+	font-size: 34px;
+	padding: 10px;
+	font-family: Roboto, sans-serif;
+}
+</style>
+
 </h:head>
 
 <h:body>
-
 	<!--  TABELA DE AUTORES (das análises) -->
+
 	<h:form id="form">
 		<p:panelGrid columns="2" layout="grid">
 			<f:facet name="header">
@@ -26,28 +53,40 @@
 
 				<p:column headerText="Nome">
 					<p:commandLink value="#{aut.name}"
-						action="#{authorView.updateForm(aut)}" update="form" />
+						action="#{authorView.updateForm(aut)}" update="form"  immediate="true"/>
 				</p:column>
-
 				<p:column headerText="Deletar">
 					<p:commandButton value="Deletar"
-						action="#{authorView.deleteConfirm(aut)}" update="form" />
+						action="#{authorView.deleteConfirm(aut)}" update="form"
+						styleClass="btn btn-danger btn-sm py-1 my-1 w-100 "
+						immediate="true" />
 				</p:column>
 			</p:dataTable>
-
 			<h:form id="form-2">
-				<h:inputHidden value="#{authorView.author.id}" />
-				<p:outputLabel value="Nome do autor: " />
-				<p:inputText value="#{authorView.author.name}" />
-				<p:commandButton rendered="#{authorView.author.id != 0}"
-					value="Atualizar" action="#{authorView.update}" update="form" />
-				<p:commandButton rendered="#{authorView.author.id == 0}"
-					value="Criar" action="#{authorView.create}" update="form" />
-				<p:commandButton rendered="#{authorView.author.id != 0}"
-					value="Voltar" action="#{authorView.clearForm}" update="form" />
+				<p:panelGrid columns="1" layuout="grid">
+					<h:inputHidden value="#{authorView.author.id}" />
+					<p:outputLabel value="Nome: " />
+					<p:inputText id="nameInput" value="#{authorView.author.name}"
+						required="true" requiredMessage="Campo obrigatório" />
+					<p:message for="nameInput" />
+					<p:commandButton rendered="#{authorView.author.id != 0}"
+						value="Atualizar" action="#{authorView.update}" update="form"
+						styleClass="btn btn-primary" icon="pi pi-plus">
+					</p:commandButton>
+					<p:commandButton rendered="#{authorView.author.id == 0}"
+						value="Criar" action="#{authorView.create}" update="form"
+						styleClass="btn btn-success">
+					</p:commandButton>
+					<p:commandButton rendered="#{authorView.author.id != 0}"
+						value="Voltar" action="#{authorView.clearForm}" update="form"
+						styleClass="btn btn-secondary" immediate="true">
+					</p:commandButton>
+				</p:panelGrid>
 			</h:form>
 		</p:panelGrid>
+
 	</h:form>
+
 
 	<!--  TABELA DE LIVROS -->
 	<h:form id="form2">
@@ -62,46 +101,62 @@
 
 				<p:column headerText="Nome">
 					<p:commandLink value="#{boo.name}"
-						action="#{bookView.updateForm(boo)}" update="form2" />
+						action="#{bookView.updateForm(boo)}" update="form2"
+						immediate="true" />
 				</p:column>
 
 				<p:column headerText="Preço">
-					<p:commandLink value="#{boo.price} reais"
-						action="#{bookView.updateForm(boo)}" update="form2" />
+					<h:outputText value="#{boo.price} reais" />
 				</p:column>
 
 				<p:column headerText="Quantity">
-					<p:commandLink value="#{boo.quantity} unidades"
-						action="#{bookView.updateForm(boo)}" update="form2" />
+					<h:outputText value="#{boo.quantity} unidades" />
 				</p:column>
 
 				<p:column headerText="Gênero">
-					<p:commandLink value="#{boo.genre}"
-						action="#{bookView.updateForm(boo)}" update="form2" />
+					<h:outputText value="#{boo.genre}" />
 				</p:column>
 
-				<p:column headerText="Deletar">
+				<p:column headerText="Deletar" style="text-align:center">
 					<p:commandButton value="Deletar"
-						action="#{bookView.deleteConfirm(boo)}" update="form2" />
+						action="#{bookView.deleteConfirm(boo)}" update="form2"
+						styleClass="btn btn-danger btn-sm py-1 my-1 w-100"
+						immediate="true" />
 				</p:column>
 			</p:dataTable>
 
 			<h:form id="form-3">
-				<h:inputHidden value="#{bookView.book.id}" />
-				<p:outputLabel value="Nome: " />
-				<p:inputText value="#{bookView.book.name}" />
-				<p:outputLabel value="Preço: " />
-				<p:inputText value="#{bookView.book.price}" />
-				<p:outputLabel value="Quantidade: " />
-				<p:inputText value="#{bookView.book.quantity}" />
-				<p:outputLabel value="Gênero " />
-				<p:inputText value="#{bookView.book.genre}" />
-				<p:commandButton rendered="#{bookView.book.id != 0}"
-					value="Atualizar" action="#{bookView.update}" update="form2" />
-				<p:commandButton rendered="#{bookView.book.id == 0}" value="Criar"
-					action="#{bookView.create}" update="form2" />
-				<p:commandButton rendered="#{bookView.book.id != 0}" value="Voltar"
-					action="#{bookView.clearForm}" update="form2" />
+				<p:panelGrid columns="1" layuout="grid">
+					<h:inputHidden value="#{bookView.book.id}" />
+					<p:outputLabel value="Nome: " />
+					<p:inputText id="nameInput" value="#{bookView.book.name}"
+						required="true" requiredMessage="Campo obrigatório" />
+					<p:message for="nameInput" />
+					<p:outputLabel value="Preço: " />
+					<p:inputText id="priceInput" value="#{bookView.book.price}"
+						required="true" validator="#{bookView.validateNumberEntry}"/>
+					<p:message for="priceInput" />
+					<p:outputLabel value="Quantidade: " />
+					<p:inputText id="quantityInput" value="#{bookView.book.quantity}"
+						required="true" validator="#{bookView.validateNumberEntry}"/>
+					<p:message for="quantityInput" />
+					<p:outputLabel value="Gênero " />
+					<p:inputText id="genreInput" value="#{bookView.book.genre}"
+						required="true" requiredMessage="Campo obrigatório" />
+					<p:message for="genreInput" />
+					<p:commandButton rendered="#{bookView.book.id != 0}"
+						value="Atualizar" action="#{bookView.update}" update="form2"
+						styleClass="btn btn-primary" icon="pi pi-plus">
+					</p:commandButton>
+					<p:commandButton rendered="#{bookView.book.id == 0}" value="Criar"
+						action="#{bookView.create}" update="form2"
+						styleClass="btn btn-success">
+					</p:commandButton>
+					<p:commandButton rendered="#{bookView.book.id != 0}" value="Voltar"
+						action="#{bookView.clearForm}" update="form2"
+						styleClass="btn btn-secondary" immediate="true">
+					</p:commandButton>
+				</p:panelGrid>
 			</h:form>
 		</p:panelGrid>
 	</h:form>
@@ -119,46 +174,67 @@
 
 				<p:column headerText="Nome">
 					<p:commandLink value="#{mov.name}"
-						action="#{movieView.updateForm(mov)}" update="form3" />
+						action="#{movieView.updateForm(mov)}" update="form3"
+						immediate="true" />
 				</p:column>
 
 				<p:column headerText="Preço">
-					<p:commandLink value="#{mov.price} reais"
-						action="#{movieView.updateForm(mov)}" update="form3" />
+					<h:outputText value="#{mov.price} reais" />
 				</p:column>
 
 				<p:column headerText="Quantidade">
-					<p:commandLink value="#{mov.quantity} unidades"
-						action="#{movieView.updateForm(mov)}" update="form3" />
+					<h:outputText value="#{mov.quantity} unidades" />
 				</p:column>
 
 				<p:column headerText="Duração">
-					<p:commandLink value="#{mov.duration} minutos"
-						action="#{movieView.updateForm(mov)}" update="form3" />
+					<h:outputText value="#{mov.duration} minutos" />
 				</p:column>
 
 				<p:column headerText="Deletar">
 					<p:commandButton value="Deletar"
-						action="#{movieView.deleteConfirm(mov)}" update="form3" />
+						action="#{movieView.deleteConfirm(mov)}" update="form3"
+						styleClass="btn btn-danger btn-sm py-1 my-1 w-100"
+						immediate="true" />
 				</p:column>
 			</p:dataTable>
 
 			<h:form id="form-4">
-				<h:inputHidden value="#{movieView.movie.id}" />
-				<p:outputLabel value="Nome do filme: " />
-				<p:inputText value="#{movieView.movie.name}" />
-				<p:outputLabel value="Preço: " />
-				<p:inputText value="#{movieView.movie.price}" />
-				<p:outputLabel value="Quantidade: " />
-				<p:inputText value="#{movieView.movie.quantity}" />
-				<p:outputLabel value="Tempo/Duração " />
-				<p:inputText value="#{movieView.movie.duration}" />
-				<p:commandButton rendered="#{movieView.movie.id != 0}"
-					value="Atualizar" action="#{movieView.update}" update="form3" />
-				<p:commandButton rendered="#{movieView.movie.id == 0}" value="Criar"
-					action="#{movieView.create}" update="form3" />
-				<p:commandButton rendered="#{movieView.movie.id != 0}"
-					value="Voltar" action="#{movieView.clearForm}" update="form3" />
+				<p:panelGrid columns="1" layuout="grid">
+					<h:inputHidden value="#{movieView.movie.id}" />
+
+					<p:outputLabel value="Nome: " />
+					<p:inputText id="nameInput" value="#{movieView.movie.name}"
+						required="true" requiredMessage="Campo obrigatório" />
+					<p:message for="nameInput" />
+
+					<p:outputLabel value="Preço: " />
+					<p:inputText id="priceInput" value="#{movieView.movie.price}"
+						required="true" validator="#{movieView.validateNumberEntry}"/>
+					<p:message for="priceInput" />
+
+					<p:outputLabel value="Quantidade: " />
+					<p:inputText id="quantityInput" value="#{movieView.movie.quantity}"
+						required="true" validator="#{movieView.validateNumberEntry}"/>
+					<p:message for="quantityInput" />
+
+					<p:outputLabel value="Tempo/Duração " />
+					<p:inputText id="durationInput" value="#{movieView.movie.duration}"
+						required="true" validator="#{movieView.validateNumberEntry}"/>
+					<p:message for="durationInput" />
+
+					<p:commandButton rendered="#{movieView.movie.id != 0}"
+						value="Atualizar" action="#{movieView.update}" update="form3"
+						styleClass="btn btn-primary" icon="pi pi-plus">
+					</p:commandButton>
+					<p:commandButton rendered="#{movieView.movie.id == 0}"
+						value="Criar" action="#{movieView.create}" update="form3"
+						styleClass="btn btn-success">
+					</p:commandButton>
+					<p:commandButton rendered="#{movieView.movie.id != 0}"
+						value="Voltar" action="#{movieView.clearForm}" update="form3"
+						styleClass="btn btn-secondary" immediate="true">
+					</p:commandButton>
+				</p:panelGrid>
 			</h:form>
 		</p:panelGrid>
 	</h:form>
@@ -176,50 +252,76 @@
 
 				<p:column headerText="Comentário">
 					<p:commandLink value="#{rev.comment}"
-						action="#{reviewView.updateForm(rev)}" update="form4" />
+						action="#{reviewView.updateForm(rev)}" update="form4"
+						immediate="true" />
 				</p:column>
 
 				<p:column headerText="Estrelas">
-					<p:commandLink value="#{rev.stars} estrelas"
-						action="#{reviewView.updateForm(rev)}" update="form4" />
+					<h:outputText value="#{rev.stars} estrelas" />
 				</p:column>
 
 				<p:column headerText="Autor">
-					<p:commandLink value="#{rev.reviewer.name}"
-						action="#{reviewView.updateForm(rev)}" update="form4" />
+					<h:outputText value="#{rev.reviewer.name}" />
 				</p:column>
 
 				<p:column headerText="Produto">
-					<p:commandLink value="#{rev.product.name}"
-						action="#{reviewView.updateForm(rev)}" update="form4" />
+					<h:outputText value="#{rev.product.name}" />
 				</p:column>
 
 				<p:column headerText="Deletar">
 					<p:commandButton value="Deletar"
-						action="#{reviewView.deleteConfirm(rev)}" update="form4" />
+						action="#{reviewView.deleteConfirm(rev)}" update="form4"
+						styleClass="btn btn-danger btn-sm py-1 my-1 w-100"
+						immediate="true" />
 				</p:column>
 			</p:dataTable>
 
 			<h:form id="form-4">
-				<h:inputHidden value="#{reviewView.review.id}" />
-				<p:outputLabel value="Produto: " />
-				<p:inputText value="#{reviewView.review.product}" converter="#{reviewView.productConverter}"/>
-				<p:outputLabel value="Comentário: " />
-				<p:inputText value="#{reviewView.review.comment}" />
-				<p:outputLabel value="Estrelas: " />
-				<p:inputText value="#{reviewView.review.stars}" />
-				<p:outputLabel value="Autor: " />
-				<p:inputText value="#{reviewView.review.reviewer}" converter="#{reviewView.authorConverter}"/>
-				<p:commandButton rendered="#{reviewView.review.id != 0}"
-					value="Atualizar" action="#{reviewView.update}" update="form4" />
-				<p:commandButton rendered="#{reviewView.review.id == 0}"
-					value="Criar" action="#{reviewView.create}" update="form4" />
-				<p:commandButton rendered="#{reviewView.review.id != 0}"
-					value="Voltar" action="#{reviewView.clearForm}" update="form4" />
+				<p:panelGrid columns="1" layuout="grid">
+					<h:inputHidden value="#{reviewView.review.id}" />
+
+					<p:outputLabel value="Produto: " />
+					<p:inputText id="productInput" value="#{reviewView.review.product}"
+						converter="#{reviewView.productConverter}" required="true"
+						requiredMessage="Campo obrigatório" />
+					<p:message for="productInput" />
+
+					<p:outputLabel value="Comentário: " />
+					<p:inputText id="commentInput" value="#{reviewView.review.comment}"
+						required="true" requiredMessage="Campo obrigatório" />
+					<p:message for="commentInput" />
+
+					<p:outputLabel value="Estrelas: " />
+					<p:inputText id="starsInput" value="#{reviewView.review.stars}"
+						required="true"  validator="#{reviewView.validateNumberEntry}" />
+					<p:message for="starsInput" />
+
+					<p:outputLabel value="Autor: " />
+					<p:inputText id="authorInput" value="#{reviewView.review.reviewer}"
+						converter="#{reviewView.authorConverter}" required="true"
+						requiredMessage="Campo obrigatório" />
+					<p:message for="authorInput" />
+
+					<p:commandButton rendered="#{reviewView.review.id != 0}"
+						value="Atualizar" action="#{reviewView.update}" update="form4"
+						styleClass="btn btn-primary" icon="pi pi-plus">
+					</p:commandButton>
+					<p:commandButton rendered="#{reviewView.review.id == 0}"
+						value="Criar" action="#{reviewView.create}" update="form4"
+						styleClass="btn btn-success">
+					</p:commandButton>
+					<p:commandButton rendered="#{reviewView.review.id != 0}"
+						value="Voltar" action="#{reviewView.clearForm}" update="form4"
+						styleClass="btn btn-secondary" immediate="true">
+					</p:commandButton>
+				</p:panelGrid>
 			</h:form>
 		</p:panelGrid>
 	</h:form>
-
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
 </h:body>
 
 

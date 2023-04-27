@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.jdbc.JdbcPreparedStatement;
-
 import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Author;

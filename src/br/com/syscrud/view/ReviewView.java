@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.validator.ValidatorException;
 
 import br.com.syscrud.dao.AuthorDAO;
 import br.com.syscrud.dao.ProductDAO;
@@ -28,20 +29,15 @@ public class ReviewView implements Serializable {
 	private ReviewDAO reviewDAO;
 	private Review review;
 	
-	private Author author;
-	private Product product;
-
-	private AuthorView authorView;
-	
 	public String create() throws SQLException, Exception {
 	    if (review.getReviewer() == null || review.getReviewer().getName() == null ||
 	        review.getProduct() == null || review.getProduct().getName() == null) {
 	        FacesContext.getCurrentInstance().addMessage(null,
-	            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Nome do avaliador ou do produto não podem estar em branco."));
+	            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Nome do autor ou do produto não podem estar em branco."));
 	        return null;
 	    }
 	    
-	    // Obtém o produto e o avaliador pelo nome
+	    // Obtém o produto e o autor pelo nome
 	    ProductDAO productDAO = new ProductDAO();
 	    Product product = null;
 	    try {
@@ -60,7 +56,7 @@ public class ReviewView implements Serializable {
 	    } catch (ClassNotFoundException e) {
 	        e.printStackTrace();
 	        FacesContext.getCurrentInstance().addMessage(null,
-	            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro ao buscar o avaliador."));
+	            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro ao buscar o autor."));
 	        return null;
 	    }
 	    
@@ -73,7 +69,7 @@ public class ReviewView implements Serializable {
 	    
 	    if (reviewer == null) {
 	        FacesContext.getCurrentInstance().addMessage(null,
-	            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Avaliador não encontrado."));
+	            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Autor não encontrado."));
 	        return null;
 	    }
 	    
@@ -147,6 +143,7 @@ public class ReviewView implements Serializable {
 		this.review = review;
 	}
 	
+	//	Conversor de objetos para strings e vice-versa para o objeto Author
 	public Converter getAuthorConverter() {
         return new Converter() {
             @Override
@@ -178,6 +175,7 @@ public class ReviewView implements Serializable {
         };
 	}
 	
+	//	Conversor de objetos para strings e vice-versa para o objeto Product
 	public Converter getProductConverter() {
 	    return new Converter() {
 	        @Override
@@ -207,5 +205,18 @@ public class ReviewView implements Serializable {
 	    };
 	}
 	
+	// VERIFICA se o valor é numérico e se é maior que zero.
+	// Caso não, lança uma exceção correspondente.
+	public void validateNumberEntry(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+	    if (value == null || !(value instanceof Number)) {
+	        throw new ValidatorException(new FacesMessage("O valor deve ser numérico."));
+	    }
+
+	    double price = ((Number) value).doubleValue();
+
+	    if (price <= 0) {
+	        throw new ValidatorException(new FacesMessage("O valor deve ser maior que 0."));
+	    }
+	}
 	
 }
