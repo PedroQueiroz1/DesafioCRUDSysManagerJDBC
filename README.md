@@ -19,3 +19,5 @@ Além de estar utilizando Tomcat pela primeira vez. (versão 9.0)
 <br>Análise é feita em um produto específico. O produto pode receber várias análises.
 
 <br><br>>É possível Criar, listar, atualizar e deletar das tabelas: 'author', 'book', 'movie', 'review'.
+
+<br><br>Nesse projeto eu utilizo: JDBC, JSF, Primefaces, MySQL.
