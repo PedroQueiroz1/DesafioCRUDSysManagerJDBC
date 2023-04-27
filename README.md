@@ -20,4 +20,4 @@ Além de estar utilizando Tomcat pela primeira vez. (versão 9.0)
 
 <br><br>>É possível Criar, listar, atualizar e deletar das tabelas: 'author', 'book', 'movie', 'review'.
 
-<br><br>Nesse projeto eu utilizo: JDBC, JSF, Primefaces, MySQL.
+<br><br>Nesse projeto eu utilizo: JDBC, JSF, Primefaces, MySQL connector 5.1, Tomcat 9.0
