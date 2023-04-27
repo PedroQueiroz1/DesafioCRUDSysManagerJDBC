@@ -1,13 +1,12 @@
 package br.com.syscrud.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
 import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
@@ -22,13 +21,13 @@ public class MovieDAO {
 		String sqlMovie = "INSERT INTO movie (id, duration) VALUES (?, ?)";
 
 		Connection conn = null;
-		JdbcPreparedStatement pstmProduct = null;
-		JdbcPreparedStatement pstmMovie = null;
+		PreparedStatement pstmProduct = null;
+		PreparedStatement pstmMovie = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 
-			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct, Statement.RETURN_GENERATED_KEYS);
+			pstmProduct = conn.prepareStatement(sqlProduct, Statement.RETURN_GENERATED_KEYS);
 			pstmProduct.setString(1, movie.getName());
 			pstmProduct.setDouble(2, movie.getPrice());
 			pstmProduct.setInt(3, movie.getQuantity());
@@ -37,7 +36,7 @@ public class MovieDAO {
 			ResultSet generatedKeys = pstmProduct.getGeneratedKeys();
 			if (generatedKeys.next()) {
 				int productId = generatedKeys.getInt(1);
-				pstmMovie = (JdbcPreparedStatement) conn.prepareStatement(sqlMovie);
+				pstmMovie = conn.prepareStatement(sqlMovie);
 				pstmMovie.setInt(1, productId);
 				pstmMovie.setInt(2, movie.getDuration());
 				pstmMovie.executeUpdate();
@@ -70,13 +69,13 @@ public class MovieDAO {
 				+ "INNER JOIN product p ON m.id = p.id";
 		List<Movie> movies = new ArrayList<>();
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		int count = 0;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
 
 			while (rset.next()) {
@@ -123,12 +122,12 @@ public class MovieDAO {
 		String sql = "SELECT p.*, m.duration FROM `product` p JOIN `movie` m ON p.id = m.id WHERE p.`id` = ?";
 		Movie movie = null;
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			rset = pstm.executeQuery();
 
@@ -172,12 +171,12 @@ public class MovieDAO {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Movie movie = null;
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, name);
 			rset = pstm.executeQuery();
 
@@ -219,13 +218,13 @@ public class MovieDAO {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
 		String sqlMovie = "UPDATE `movie` SET `duration` = ? WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstmProduct = null;
-		JdbcPreparedStatement pstmMovie = null;
+		PreparedStatement pstmProduct = null;
+		PreparedStatement pstmMovie = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct);
-			pstmMovie = (JdbcPreparedStatement) conn.prepareStatement(sqlMovie);
+			pstmProduct = conn.prepareStatement(sqlProduct);
+			pstmMovie = conn.prepareStatement(sqlMovie);
 
 			pstmProduct.setString(1, movie.getName());
 			pstmProduct.setDouble(2, movie.getPrice());
@@ -272,13 +271,13 @@ public class MovieDAO {
 	public void deleteById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ProductDAO productDAO = new ProductDAO();
 		MovieDAO movieDAO = new MovieDAO();
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
 			int rowsAffected = pstm.executeUpdate();
@@ -320,11 +319,11 @@ public class MovieDAO {
 	public void deleteMovieByProductId(int productId) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `movie` WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, productId);
 
 			pstm.executeUpdate();

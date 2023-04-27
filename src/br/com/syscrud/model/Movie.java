@@ -1,8 +1,12 @@
 package br.com.syscrud.model;
 
-//Filmes
-public class Movie extends Product{
+import java.io.Serializable;
 
+//Filmes
+public class Movie extends Product implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private int duration;
 
 	public int getDuration() {

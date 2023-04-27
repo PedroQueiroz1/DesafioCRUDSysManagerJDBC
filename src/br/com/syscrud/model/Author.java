@@ -1,17 +1,32 @@
 package br.com.syscrud.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 //'Author' está no sentido de autor do comentário.
 //Preferi 'Author' pois 'reviewer' ia me confundir...
-public class Author implements Printable{
-	
+public class Author implements Printable, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private int id;
-	
+
 	private String name;
-	
+
 	// 1..N
 	private List<Review> reviews;
+
+	//PRECISEI CRIAR ESSE CONSTRUTOR
+	public Author(String name) {
+		this.name = name;
+	}
+	
+	public Author(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 
 
 	public Author() {}
@@ -46,6 +61,7 @@ public class Author implements Printable{
 		this.reviews = reviews;
 	}
 	
+	
 	@Override
 	public void printDetails() {
 		System.out.println("\nAutor - ");
@@ -64,4 +80,6 @@ public class Author implements Printable{
 			System.out.println("Nenhum comentário disponível.\n");
 		}
 	}
+	
+	
 }

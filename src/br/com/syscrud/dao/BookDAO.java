@@ -1,13 +1,12 @@
 package br.com.syscrud.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
 import br.com.syscrud.exception.ResourceNotFoundException;
 import br.com.syscrud.factory.ConnectionFactory;
@@ -22,13 +21,13 @@ public class BookDAO {
 		String sqlBook = "INSERT INTO book (id, genre) VALUES (?, ?)";
 
 		Connection conn = null;
-		JdbcPreparedStatement pstmProduct = null;
-		JdbcPreparedStatement pstmBook = null;
+		PreparedStatement pstmProduct = null;
+		PreparedStatement pstmBook = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 
-			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct, Statement.RETURN_GENERATED_KEYS);
+			pstmProduct = conn.prepareStatement(sqlProduct, Statement.RETURN_GENERATED_KEYS);
 			pstmProduct.setString(1, book.getName());
 			pstmProduct.setDouble(2, book.getPrice());
 			pstmProduct.setInt(3, book.getQuantity());
@@ -37,7 +36,7 @@ public class BookDAO {
 			ResultSet generatedKeys = pstmProduct.getGeneratedKeys();
 			if (generatedKeys.next()) {
 				int productId = generatedKeys.getInt(1);
-				pstmBook = (JdbcPreparedStatement) conn.prepareStatement(sqlBook);
+				pstmBook = conn.prepareStatement(sqlBook);
 				pstmBook.setInt(1, productId);
 				pstmBook.setString(2, book.getGenre());
 				pstmBook.executeUpdate();
@@ -70,13 +69,13 @@ public class BookDAO {
 				+ "INNER JOIN product p ON b.id = p.id";
 		List<Book> books = new ArrayList<>();
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		int count = 0;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
 
 			while (rset.next()) {
@@ -125,12 +124,12 @@ public class BookDAO {
 		String sql = "SELECT p.*, b.genre FROM `product` p JOIN `book` b ON p.id = b.id WHERE p.`id` = ?";
 		Book book = null;
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			rset = pstm.executeQuery();
 
@@ -174,12 +173,12 @@ public class BookDAO {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Book book = null;
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, name);
 			rset = pstm.executeQuery();
 
@@ -220,13 +219,13 @@ public class BookDAO {
 		String sqlProduct = "UPDATE `product` SET `name` = ?, `price` = ?, `quantity` = ? WHERE `id` = ?";
 		String sqlBook = "Update `book` SET `genre` = ? WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstmProduct = null;
-		JdbcPreparedStatement pstmBook = null;
+		PreparedStatement pstmProduct = null;
+		PreparedStatement pstmBook = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstmProduct = (JdbcPreparedStatement) conn.prepareStatement(sqlProduct);
-			pstmBook = (JdbcPreparedStatement) conn.prepareStatement(sqlBook);
+			pstmProduct = conn.prepareStatement(sqlProduct);
+			pstmBook = conn.prepareStatement(sqlBook);
 
 			
 			pstmProduct.setString(1, book.getName());
@@ -272,13 +271,13 @@ public class BookDAO {
 	public void deleteById(int id) throws SQLException, ClassNotFoundException {
 		String sql = "DELETE FROM `book` WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ProductDAO productDAO = new ProductDAO();
 		BookDAO bookDAO = new BookDAO();
 		
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			
 			int rowsAffected = pstm.executeUpdate();
@@ -320,11 +319,11 @@ public class BookDAO {
 	public void deleteBookByProductId(int productId) throws SQLException, ClassNotFoundException {
 	    String sql = "DELETE FROM `book` WHERE `id` = ?";
 	    Connection conn = null;
-	    JdbcPreparedStatement pstm = null;
+	    PreparedStatement pstm = null;
 
 	    try {
 	        conn = ConnectionFactory.createConnectionToMySQL();
-	        pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+	        pstm = conn.prepareStatement(sql);
 	        pstm.setInt(1, productId);
 
 	        pstm.executeUpdate();

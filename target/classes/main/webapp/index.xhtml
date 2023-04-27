@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>CineLivraria!</title>
+</h:head>
+
+<h:body>
+
+	<!--  TABELA DE AUTORES (das análises) -->
+	<h:form id="form">
+		<p:panelGrid columns="2" layout="grid">
+			<f:facet name="header">
+                Tabela de Autor
+            </f:facet>
+			<p:dataTable var="aut" value="#{authorView.authorList}">
+				<p:column headerText="Id">
+					<h:outputText value="#{aut.id}" />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<p:commandLink value="#{aut.name}"
+						action="#{authorView.updateForm(aut)}" update="form" />
+				</p:column>
+
+				<p:column headerText="Deletar">
+					<p:commandButton value="Deletar"
+						action="#{authorView.deleteConfirm(aut)}" update="form" />
+				</p:column>
+			</p:dataTable>
+
+			<h:form id="form-2">
+				<h:inputHidden value="#{authorView.author.id}" />
+				<p:outputLabel value="Nome do autor: " />
+				<p:inputText value="#{authorView.author.name}" />
+				<p:commandButton rendered="#{authorView.author.id != 0}"
+					value="Atualizar" action="#{authorView.update}" update="form" />
+				<p:commandButton rendered="#{authorView.author.id == 0}"
+					value="Criar" action="#{authorView.create}" update="form" />
+				<p:commandButton rendered="#{authorView.author.id != 0}"
+					value="Clear Form" action="#{authorView.clearForm}" update="form" />
+			</h:form>
+		</p:panelGrid>
+	</h:form>
+
+	<!--  TABELA DE LIVROS -->
+	<h:form id="form2">
+		<p:panelGrid columns="2" layout="grid">
+			<f:facet name="header">
+                Tabela de Livro
+            </f:facet>
+			<p:dataTable var="boo" value="#{bookView.bookList}">
+				<p:column headerText="Id">
+					<h:outputText value="#{boo.id}" />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<p:commandLink value="#{boo.name}"
+						action="#{bookView.updateForm(boo)}" update="form2" />
+				</p:column>
+
+				<p:column headerText="Deletar">
+					<p:commandButton value="Deletar"
+						action="#{bookView.deleteConfirm(boo)}" update="form2" />
+				</p:column>
+			</p:dataTable>
+
+			<h:form id="form-3">
+				<h:inputHidden value="#{bookView.book.id}" />
+				<p:outputLabel value="Nome do livro: " />
+				<p:inputText value="#{bookView.book.name}" />
+				<p:commandButton rendered="#{bookView.book.id != 0}"
+					value="Atualizar" action="#{bookView.update}" update="form2" />
+				<p:commandButton rendered="#{bookView.book.id == 0}" value="Criar"
+					action="#{bookView.create}" update="form2" />
+				<p:commandButton rendered="#{bookView.book.id != 0}"
+					value="Clear Form" action="#{bookView.clearForm}" update="form2" />
+			</h:form>
+		</p:panelGrid>
+	</h:form>
+
+	<!--  TABELA DE FILMES -->
+	<h:form id="form3">
+		<p:panelGrid columns="2" layout="grid">
+			<f:facet name="header">
+                Tabela de Filme
+            </f:facet>
+			<p:dataTable var="mov" value="#{movieView.movieList}">
+				<p:column headerText="Id">
+					<h:outputText value="#{mov.id}" />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<p:commandLink value="#{mov.name}"
+						action="#{movieView.updateForm(mov)}" update="form3" />
+				</p:column>
+
+				<p:column headerText="Deletar">
+					<p:commandButton value="Deletar"
+						action="#{movieView.deleteConfirm(mov)}" update="form3" />
+				</p:column>
+			</p:dataTable>
+
+			<h:form id="form-4">
+				<h:inputHidden value="#{movieView.movie.id}" />
+				<p:outputLabel value="Nome do filme: " />
+				<p:inputText value="#{movieView.movie.name}" />
+				<p:commandButton rendered="#{movieView.movie.id != 0}"
+					value="Atualizar" action="#{movieView.update}" update="form3" />
+				<p:commandButton rendered="#{movieView.movie.id == 0}" value="Criar"
+					action="#{movieView.create}" update="form3" />
+				<p:commandButton rendered="#{movieView.movie.id != 0}"
+					value="Clear Form" action="#{movieView.clearForm}" update="form3" />
+			</h:form>
+		</p:panelGrid>
+	</h:form>
+
+	<!--  TABELA DE ANÁLISES -->
+	<h:form id="form4">
+		<p:panelGrid columns="2" layout="grid">
+			<f:facet name="header">
+                Tabela de Análise
+            </f:facet>
+			<p:dataTable var="rev" value="#{reviewView.reviewList}">
+				<p:column headerText="Id">
+					<h:outputText value="#{rev.id}" />
+				</p:column>
+
+				<p:column headerText="Comentário">
+					<p:commandLink value="#{rev.comment}"
+						action="#{reviewView.updateForm(rev)}" update="form4" />
+				</p:column>
+
+				<p:column headerText="Estrelas">
+					<p:commandLink value="#{rev.stars}"
+						action="#{reviewView.updateForm(rev)}" update="form4" />
+				</p:column>
+
+				<p:column headerText="Deletar">
+					<p:commandButton value="Deletar"
+						action="#{reviewView.deleteConfirm(rev)}" update="form4" />
+				</p:column>
+			</p:dataTable>
+
+			<h:form id="form-4">
+				<h:inputHidden value="#{reviewView.review.id}" />
+				<p:outputLabel value="Comentário: " />
+				<p:inputText value="#{reviewView.review.comment}" />
+				<p:commandButton rendered="#{reviewView.review.id != 0}"
+					value="Atualizar" action="#{reviewView.update}" update="form4" />
+				<p:commandButton rendered="#{reviewView.review.id == 0}"
+					value="Criar" action="#{reviewView.create}" update="form4" />
+				<p:commandButton rendered="#{reviewView.review.id != 0}"
+					value="Clear Form" action="#{reviewView.clearForm}" update="form4" />
+			</h:form>
+		</p:panelGrid>
+	</h:form>
+
+</h:body>
+
+
+</html>

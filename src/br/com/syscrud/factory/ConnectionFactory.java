@@ -12,12 +12,12 @@ public class ConnectionFactory {
 	
 	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/sysmanager_crud_jdbc";
 	
-	
 	// Conexão com o banco de dados
 	public static Connection createConnectionToMySQL() throws SQLException, ClassNotFoundException {
 		
 		//Faz com que a classe seja carregada pela JVM
-		Class.forName("com.mysql.cj.jdbc.Driver");
+		//mudei o driver de com.mysql.cj.jdbc.Driver para com.mysql.jdbc.Driver
+		Class.forName("com.mysql.jdbc.Driver");
 		
 		String characterEncoding = "UTF-8";
 		String url = DATABASE_URL + "?characterEncoding=" + characterEncoding;

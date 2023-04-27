@@ -1,7 +1,11 @@
 package br.com.syscrud.model;
 
+import java.io.Serializable;
+
 //Livros
-public class Book extends Product{
+public class Book extends Product implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String genre;
 

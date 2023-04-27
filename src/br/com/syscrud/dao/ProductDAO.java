@@ -1,11 +1,10 @@
 package br.com.syscrud.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
 import br.com.syscrud.factory.ConnectionFactory;
 import br.com.syscrud.model.Product;
@@ -19,12 +18,12 @@ public class ProductDAO {
 		String sql = "SELECT * FROM `product` WHERE `id` = ?";
 		Product product = null;
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			rset = pstm.executeQuery();
 
@@ -66,12 +65,12 @@ public class ProductDAO {
 		String sql = "SELECT * FROM `product` WHERE `name` = ?";
 		Product product = null;
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, name);
 			rset = pstm.executeQuery();
 
@@ -112,12 +111,12 @@ public class ProductDAO {
 	public void findAll() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `product`";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 		ResultSet rset = null;
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
 			int count = 0;
 
@@ -166,7 +165,7 @@ public class ProductDAO {
 	public void deleteBookById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `product` WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 
 		BookDAO bookDAO = new BookDAO();
 		bookDAO.deleteBookByProductId(id);
@@ -174,7 +173,7 @@ public class ProductDAO {
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
 			pstm.executeUpdate();
@@ -202,7 +201,7 @@ public class ProductDAO {
 	public void deleteMovieById(int id) throws SQLException, Exception {
 		String sql = "DELETE FROM `product` WHERE `id` = ?";
 		Connection conn = null;
-		JdbcPreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 
 		MovieDAO movieDAO = new MovieDAO();
 		movieDAO.deleteMovieByProductId(id);
@@ -210,7 +209,7 @@ public class ProductDAO {
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
 
-			pstm = (JdbcPreparedStatement) conn.prepareStatement(sql);
+			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 
 			pstm.executeUpdate();

@@ -1,10 +1,14 @@
 package br.com.syscrud.model;
 
+import java.io.Serializable;
+
 //São os comentários.
 //Comentários são feitos tanto em filmes quanto em livros.
 //Os comentários são feitos pelos autores
-public class Review {
+public class Review implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	
 	private int stars;
