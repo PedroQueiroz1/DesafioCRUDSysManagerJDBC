@@ -22,7 +22,6 @@
 <br>>Autor não tem relação nenhuma com outra classe a nao ser realizar comentários(review) nos produtos.
 <br>>Produto é dividido entre livros e filmes.
 <br>Análise é feita em um produto específico. O produto pode receber várias análises.
-<br><br>Nesse projeto eu utilizo: JDBC, JSF, Primefaces, MySQL connector 5.1, Tomcat 9.0
 <br><br>>É possível Criar, listar, atualizar e deletar das tabelas: 'author', 'book', 'movie', 'review'.
 
 <p align="justify">
@@ -49,6 +48,8 @@
 
 ## Ferramentas utilizadas
 [![My Skills](https://skillicons.dev/icons?i=java,html,bootstrap,mysql,eclipse)](https://skillicons.dev)
+
+<br><br>Nesse projeto eu utilizo: Java 1.8, JDBC, JSF, Primefaces, MySQL connector 5.1, Tomcat 9.0
 
 ## Acesso ao projeto
 
