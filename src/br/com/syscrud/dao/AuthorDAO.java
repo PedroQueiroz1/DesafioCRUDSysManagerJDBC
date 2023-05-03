@@ -100,6 +100,7 @@ public class AuthorDAO {
 			}
 		}
 	}
+
 	// READ
 	public List<Author> findAllList() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM `author`";
@@ -149,7 +150,6 @@ public class AuthorDAO {
 		}
 		return authors;
 	}
-
 
 	// READ
 	public Author findById(int id) throws SQLException, ClassNotFoundException {
@@ -278,7 +278,9 @@ public class AuthorDAO {
 
 	// DELETE
 	public void deleteById(int id) throws SQLException, Exception {
+		
 		String sql = "DELETE FROM `author` WHERE `id` = ?";
+		
 		Connection conn = null;
 		PreparedStatement pstm = null;
 
@@ -317,5 +319,4 @@ public class AuthorDAO {
 			}
 		}
 	}
-
 }

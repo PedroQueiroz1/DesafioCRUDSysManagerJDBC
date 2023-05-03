@@ -407,7 +407,9 @@ public class ReviewDAO {
 
 	// DELETE
 	public void deleteByAuthorId(int authorId) throws SQLException, Exception {
+		
 		String sql = "DELETE FROM `review` WHERE `reviewer_id` = ?";
+		
 		Connection conn = null;
 		PreparedStatement pstm = null;
 

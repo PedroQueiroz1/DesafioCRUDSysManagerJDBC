@@ -1,0 +1,6 @@
+Para se conectar com a página inicial da aplicação:
+http://localhost:8080/sysmanager-crud-jdbc/faces/index.xhtml
+
+- JavaSE 1.8
+- MySQL connector 5.1
+- 

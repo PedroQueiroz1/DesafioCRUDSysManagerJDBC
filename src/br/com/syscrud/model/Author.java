@@ -16,7 +16,6 @@ public class Author implements Printable, Serializable {
 	// 1..N
 	private List<Review> reviews;
 
-	//PRECISEI CRIAR ESSE CONSTRUTOR
 	public Author(String name) {
 		this.name = name;
 	}
