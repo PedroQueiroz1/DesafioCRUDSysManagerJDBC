@@ -29,6 +29,10 @@
  Primeiro desafio: Criar um CRUD com o console sendo a interface de interação com o usuário. Obrigatório o uso do banco de dados e de pelo menos um relacionamento de 1..N<br>
  Segundo desafio: Reutilizar o código do primeiro desafio e criar uma interface mais amigável para o usuário.<br>
 
+<br>
+
+### Foi o primeiro projeto que criei com JDBC, não conhecia nem a estrutura de pastas, ESTÁ BAGUNÇADO rsrs
+
 ## Funcionalidades
 
 :heavy_check_mark: `Funcionalidade 1:` Cria, atualiza, deleta e lê todos os dados de cada tabela presente no projeto(Autor, Avaliações, Livro e Filme)
